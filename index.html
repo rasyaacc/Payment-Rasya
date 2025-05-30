@@ -257,7 +257,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <script>
         const firebaseConfig = {
-          apiKey: "AIzaSyDA_T-LRjANUHG1ZLqKG1vwD_Wu9hpzWz4",
+          apiKey: "AIzaSyDA_T-LRjANUHG1ZLqKG1vwD_Wu9hpzWz4", // Pastikan Firebase Rules Anda aman
           authDomain: "statuspembayaran-b7a1f.firebaseapp.com",
           databaseURL: "https://statuspembayaran-b7a1f-default-rtdb.asia-southeast1.firebasedatabase.app",
           projectId: "statuspembayaran-b7a1f",
@@ -285,7 +285,7 @@
         const paymentStatusDisplay = document.getElementById('paymentStatusDisplay');
         const autoLastChecked = document.getElementById('autoLastChecked');
         const refreshWarning = document.getElementById('refreshWarning');
-        const tombolKembaliKeAwal = document.getElementById('tombolKembaliKeAwal'); // Tombol baru
+        const tombolKembaliKeAwal = document.getElementById('tombolKembaliKeAwal');
 
         const STATIC_QRIS_IMAGE_URL = "https://raw.githubusercontent.com/rasyaacc/Payment-Rasya/2cfca336c23a0350065fbdd9e69ad0eceacf6528/Qris-SP.jpeg";
         const hargaPerBlok = 100000;
@@ -385,7 +385,7 @@
         function kembaliKeHalamanAwal() {
             paymentSection.style.display = 'none';
             refreshWarning.style.display = 'none';
-            tombolKembaliKeAwal.style.display = 'none'; // Sembunyikan tombol kembali
+            tombolKembaliKeAwal.style.display = 'none';
 
             orderFormContainer.style.display = 'block';
             if (kategoriAkunSelect.options.length > 0) {
@@ -398,7 +398,7 @@
                 activePaymentStatusRef.off();
                 activePaymentStatusRef = null;
             }
-            removeBeforeUnloadListener(); // Pastikan ini juga dipanggil
+            removeBeforeUnloadListener();
             console.log("Dikembalikan ke halaman awal (form pemesanan).");
         }
 
@@ -423,7 +423,7 @@
                 paymentStatusDisplay.textContent = 'Menunggu Pembayaran...';
                 paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
                 refreshWarning.style.display = 'block';
-                tombolKembaliKeAwal.style.display = 'none'; // Pastikan tombol kembali disembunyikan awalnya
+                tombolKembaliKeAwal.style.display = 'none';
                 addBeforeUnloadListener();
                 mulaiMendengarkanStatusPembayaran(currentActiveTransactionId);
             }
@@ -447,8 +447,8 @@
                         removeBeforeUnloadListener();
                         if(activePaymentStatusRef) activePaymentStatusRef.off();
                         activePaymentStatusRef = null;
-                        tombolKembaliKeAwal.style.display = 'inline-block'; // Tampilkan tombol kembali
-                        alert('Pembayaran berhasil!');
+                        tombolKembaliKeAwal.style.display = 'inline-block';
+                        console.log('Pembayaran berhasil, pop-up alert tidak ditampilkan.'); // Pop-up alert sudah dihapus
                     } else {
                         paymentStatusDisplay.textContent = `Status: ${data.status}`;
                         paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
@@ -472,15 +472,13 @@
         }
 
         jumlahAkunInput.addEventListener('input', perbaruiTotalHarga);
-        tombolKembaliKeAwal.addEventListener('click', kembaliKeHalamanAwal); // Event listener untuk tombol baru
+        tombolKembaliKeAwal.addEventListener('click', kembaliKeHalamanAwal);
 
         window.onload = () => {
             perbaruiTotalHarga();
             if (paymentSection.style.display === 'block') {
                  refreshWarning.style.display = 'block';
                  addBeforeUnloadListener();
-                 // Jika status sudah berhasil dari load sebelumnya (misal menggunakan local storage), tampilkan tombol kembali
-                 // Untuk saat ini, tombol kembali hanya muncul via Firebase listener
             } else {
                  refreshWarning.style.display = 'none';
                  tombolKembaliKeAwal.style.display = 'none';
