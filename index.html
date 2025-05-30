@@ -3,28 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status Pembayaran Real-time Anda</title>
+    <title>Pemesanan & Status Pembayaran</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Mengubah flex direction agar bisa ada 2 section */
             align-items: center;
             min-height: 100vh;
-            margin: 0;
+            margin: 20px 0; /* Memberi sedikit margin atas bawah */
             background-color: #f4f7f9;
             color: #333;
         }
-        #container {
+        .container {
             background-color: #ffffff;
             padding: 30px 40px;
             border-radius: 12px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px; /* Sedikit lebih lebar untuk form */
+            margin-bottom: 30px; /* Jarak antar container */
         }
-        h1 {
+        h1, h2 {
             color: #2c3e50;
             margin-bottom: 25px;
             font-size: 1.8em;
@@ -36,8 +37,8 @@
             color: #555;
             text-align: left;
         }
-        input[type="text"] {
-            width: calc(100% - 22px); /* Mempertimbangkan padding dan border */
+        input[type="text"], input[type="number"], select {
+            width: calc(100% - 24px); /* Mempertimbangkan padding dan border */
             padding: 12px;
             margin-bottom: 20px;
             border: 1px solid #ddd;
@@ -55,54 +56,80 @@
             font-size: 1em;
             font-weight: 600;
             transition: background-color 0.3s ease;
+            margin-top: 10px;
         }
         button:hover {
             background-color: #2980b9;
         }
-        #paymentStatus {
-            font-size: 1.5em; /* Lebih besar untuk status */
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        #totalHargaDisplay, #paymentStatus {
+            font-size: 1.5em;
             font-weight: bold;
             padding: 20px;
-            margin-top: 25px;
+            margin-top: 15px;
             border-radius: 8px;
-            min-height: 60px; /* Agar ukuran tidak berubah-ubah saat teks berganti */
+            min-height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
-            word-break: break-word; /* Agar teks panjang tidak meluber */
+            word-break: break-word;
         }
-        .status-pending {
-            background-color: #fef3cd;
-            color: #664d03;
-            border: 1px solid #ffeeba;
+        .harga-display {
+            background-color: #e9ecef;
+            color: #007bff;
+            border: 1px solid #ced4da;
         }
-        .status-success {
-            background-color: #d1e7dd;
-            color: #0f5132;
-            border: 1px solid #badbcc;
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9em;
+            text-align: left;
+            margin-top: -15px;
+            margin-bottom: 10px;
         }
-        .status-error, .status-notfound {
-            background-color: #f8d7da;
-            color: #842029;
-            border: 1px solid #f5c2c7;
+        /* Kelas status pembayaran yang sudah ada */
+        .status-pending { background-color: #fef3cd; color: #664d03; border: 1px solid #ffeeba; }
+        .status-success { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+        .status-error, .status-notfound { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+        .status-info { background-color: #cff4fc; color: #055160; border: 1px solid #b6effb; }
+        
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 40px 0;
         }
-        .status-info {
-            background-color: #cff4fc;
-            color: #055160;
-            border: 1px solid #b6effb;
-        }
-        #lastChecked {
-            font-size: 0.8em;
-            color: #777;
-            margin-top: 15px;
-        }
+        #lastChecked { font-size: 0.8em; color: #777; margin-top: 15px; }
     </style>
 </head>
 <body>
-    <div id="container">
-        <h1>Cek Status Pembayaran</h1>
+    <div class="container" id="orderFormContainer">
+        <h1>📝 Form Pemesanan Akun</h1>
+        
+        <label for="kategoriAkun">1. Kategori Akun:</label>
+        <select id="kategoriAkun">
+            <option value="300">300 Followers</option>
+            <option value="1000">1000 Followers</option>
+        </select>
+
+        <label for="jumlahAkun">2. Jumlah Akun (Minimal 3, Kelipatan 3):</label>
+        <input type="number" id="jumlahAkun" placeholder="Contoh: 3, 6, atau 9">
+        <div id="jumlahAkunError" class="error-message"></div>
+
+        <label for="totalHargaDisplay">3. Total Harga:</label>
+        <div id="totalHargaDisplay" class="harga-display">Rp 0</div>
+
+        <button id="tombolBayar" disabled>Bayar</button>
+    </div>
+
+    <hr>
+
+    <div class="container" id="statusCheckContainer">
+        <h2>🔍 Cek Status Pembayaran</h2>
         <label for="transactionIdInput">Masukkan ID Transaksi Anda:</label>
-        <input type="text" id="transactionIdInput" placeholder="Contoh: 1321">
+        <input type="text" id="transactionIdInput" placeholder="Contoh: 1321 atau TRXXYZ">
         <button onclick="startListeningForStatus()">Cek Status</button>
 
         <div id="paymentStatus" class="status-info">Masukkan ID dan klik "Cek Status"</div>
@@ -113,7 +140,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <script>
-        // Konfigurasi Firebase Anda (sudah diisi dengan data yang Anda berikan)
+        // Konfigurasi Firebase Anda (sudah diisi dengan data yang Anda berikan sebelumnya)
         const firebaseConfig = {
           apiKey: "AIzaSyDA_T-LRjANUHG1ZLqKG1vwD_Wu9hpzWz4",
           authDomain: "statuspembayaran-b7a1f.firebaseapp.com",
@@ -127,12 +154,80 @@
 
         // Inisialisasi Firebase
         firebase.initializeApp(firebaseConfig);
-        const database = firebase.database(); // Menggunakan sintaks Realtime Database v8 (compat)
+        const database = firebase.database();
 
+        // === LOGIKA UNTUK FORM PEMESANAN ===
+        const kategoriAkunSelect = document.getElementById('kategoriAkun');
+        const jumlahAkunInput = document.getElementById('jumlahAkun');
+        const totalHargaDisplay = document.getElementById('totalHargaDisplay');
+        const jumlahAkunError = document.getElementById('jumlahAkunError');
+        const tombolBayar = document.getElementById('tombolBayar');
+
+        const hargaPerBlok = 100000; // Rp 100.000
+        const ukuranBlok = 3; // per 3 akun
+
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+        }
+
+        function perbaruiTotalHarga() {
+            const jumlah = parseInt(jumlahAkunInput.value);
+            jumlahAkunError.textContent = ''; // Bersihkan pesan error sebelumnya
+            tombolBayar.disabled = true; // Nonaktifkan tombol bayar secara default
+
+            if (isNaN(jumlah)) {
+                totalHargaDisplay.textContent = formatRupiah(0);
+                // Tidak perlu pesan error jika kosong, hanya jika ada input tapi tidak valid
+                if (jumlahAkunInput.value !== "") {
+                     jumlahAkunError.textContent = 'Masukkan angka yang valid.';
+                }
+                return;
+            }
+
+            if (jumlah < ukuranBlok) {
+                jumlahAkunError.textContent = `Jumlah minimal adalah ${ukuranBlok} akun.`;
+                totalHargaDisplay.textContent = formatRupiah(0);
+                return;
+            }
+
+            if (jumlah % ukuranBlok !== 0) {
+                jumlahAkunError.textContent = `Jumlah harus dalam kelipatan ${ukuranBlok} (misalnya: ${ukuranBlok}, ${ukuranBlok*2}, ${ukuranBlok*3}, dst.).`;
+                totalHargaDisplay.textContent = formatRupiah(0);
+                return;
+            }
+
+            // Jika semua validasi lolos
+            const totalHarga = (jumlah / ukuranBlok) * hargaPerBlok;
+            totalHargaDisplay.textContent = formatRupiah(totalHarga);
+            tombolBayar.disabled = false; // Aktifkan tombol bayar
+        }
+
+        jumlahAkunInput.addEventListener('input', perbaruiTotalHarga);
+
+        tombolBayar.addEventListener('click', function() {
+            const kategoriTerpilih = kategoriAkunSelect.options[kategoriAkunSelect.selectedIndex].text;
+            const jumlah = parseInt(jumlahAkunInput.value);
+            const totalHarga = (jumlah / ukuranBlok) * hargaPerBlok;
+
+            if (tombolBayar.disabled) {
+                alert("Harap perbaiki input jumlah akun terlebih dahulu.");
+                return;
+            }
+            
+            // Untuk sekarang, kita hanya tampilkan alert.
+            // Nantinya, di sini Anda bisa menambahkan logika untuk:
+            // 1. Generate ID Transaksi unik.
+            // 2. Menyimpan detail pesanan ini (kategori, jumlah, total harga, ID transaksi) ke Firebase atau Google Sheet dengan status awal "Menunggu Pembayaran".
+            // 3. Mengarahkan pengguna ke halaman pembayaran atau memberikan instruksi pembayaran.
+            alert(`Detail Pesanan:\nKategori: ${kategoriTerpilih}\nJumlah: ${jumlah} akun\nTotal Bayar: ${formatRupiah(totalHarga)}\n\nSilakan lanjutkan ke proses pembayaran (detail proses belum diimplementasikan).`);
+            
+            // Setelah ini, pengguna akan melakukan pembayaran, dan ID Transaksi dari proses tersebut
+            // akan digunakan di bagian "Cek Status Pembayaran" di bawah.
+        });
+
+        // === LOGIKA UNTUK CEK STATUS PEMBAYARAN (SUDAH ADA SEBELUMNYA) ===
         let currentTransactionId = null;
-        let paymentStatusRef = null; // Referensi ke listener Firebase
-
-        // Nilai status dari Google Sheet yang menandakan pembayaran berhasil
+        let paymentStatusRef = null;
         const STATUS_BERHASIL_DARI_SHEET = "Lunas";
 
         function startListeningForStatus() {
@@ -147,14 +242,12 @@
                 return;
             }
 
-            // Hentikan listener lama jika ID transaksi berubah atau jika listener sudah ada
             if (paymentStatusRef && (newTransactionId !== currentTransactionId || paymentStatusRef)) {
-                paymentStatusRef.off(); // Hentikan listener sebelumnya
+                paymentStatusRef.off();
                 console.log(`Listener untuk ID ${currentTransactionId} dihentikan.`);
-                paymentStatusRef = null; // Reset referensi listener
+                paymentStatusRef = null; 
             }
             
-            // Selalu set currentTransactionId ke nilai baru setelah listener lama (jika ada) dihentikan
             currentTransactionId = newTransactionId;
             console.log(`Memulai listener untuk ID Transaksi: ${currentTransactionId}`);
 
@@ -180,7 +273,6 @@
                         statusDiv.className = 'paymentStatus status-pending';
                     }
                 } else {
-                    // Jika data null, berarti ID transaksi tidak ditemukan di Firebase
                     statusDiv.textContent = 'Data transaksi tidak ditemukan.';
                     statusDiv.className = 'paymentStatus status-notfound';
                 }
@@ -198,6 +290,7 @@
                 document.getElementById('transactionIdInput').value = trxIdFromUrl;
                 startListeningForStatus();
             }
+            perbaruiTotalHarga(); // Panggil sekali saat load untuk inisialisasi status tombol bayar
         };
     </script>
 </body>
