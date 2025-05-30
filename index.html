@@ -10,15 +10,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulse {
+        @keyframes pulse { /* Ini bisa dipertahankan jika diinginkan untuk efek lain, atau dihapus jika tidak terpakai */
             0% { opacity: 0.5; }
             50% { opacity: 1; }
             100% { opacity: 0.5; }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         body {
@@ -27,66 +22,66 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            margin: 30px 0; /* Increased margin */
-            background-color: #f4f7f9; /* Softer background */
-            color: #333; /* Darker, more professional text */
+            margin: 30px 0;
+            background-color: #f4f7f9;
+            color: #333;
             font-size: 16px;
-            line-height: 1.65; /* Improved readability */
+            line-height: 1.65;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
             background-color: #ffffff;
-            padding: 40px 50px; /* Increased padding */
-            border-radius: 20px; /* Softer radius */
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07); /* Softer, more modern shadow */
+            padding: 40px 50px;
+            border-radius: 20px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07);
             text-align: center;
             width: 90%;
-            max-width: 600px; /* Slightly wider for better spacing */
+            max-width: 600px;
             margin-bottom: 35px;
             animation: fadeIn 0.5s ease-out forwards;
-            border: 1px solid #e9eef2; /* Subtle border */
+            border: 1px solid #e9eef2;
         }
 
-        h1 { /* Styling khusus untuk H1 di form pemesanan */
-            color: #1a2533; /* Darker, more sophisticated */
+        h1 {
+            color: #1a2533;
             margin-bottom: 35px;
-            font-size: 2em; /* Slightly larger */
-            font-weight: 700; /* Bolder */
-            letter-spacing: -0.5px; /* Tighter letter spacing */
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         label {
             display: block;
             margin-bottom: 12px;
             font-weight: 500;
-            color: #4a5568; /* Softer label color */
+            color: #4a5568;
             text-align: left;
-            font-size: 0.95em; /* Slightly smaller for distinction */
+            font-size: 0.95em;
         }
 
         input[type="text"], input[type="number"], select {
-            width: 100%; /* Full width accounting for box-sizing */
-            padding: 15px 18px; /* Increased padding */
+            width: 100%;
+            padding: 15px 18px;
             margin-bottom: 25px;
-            border: 1px solid #d2d6dc; /* Softer border */
-            border-radius: 10px; /* Softer radius */
+            border: 1px solid #d2d6dc;
+            border-radius: 10px;
             box-sizing: border-box;
             font-size: 1em;
             color: #333;
-            background-color: #fdfdfe; /* Slightly off-white input bg */
+            background-color: #fdfdfe;
             transition: border-color 0.25s ease, box-shadow 0.25s ease;
         }
 
         input[type="text"]:focus, input[type="number"]:focus, select:focus {
-            border-color: #3b82f6; /* Modern blue focus */
+            border-color: #3b82f6;
             outline: 0;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); /* Softer focus ring */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
         }
 
-        button { /* Gaya umum untuk tombol */
-            background-color: #2563eb; /* Modern blue */
+        button {
+            background-color: #2563eb;
             color: white;
             padding: 15px 28px;
             border: none;
@@ -96,14 +91,14 @@
             font-weight: 600;
             transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
             margin-top: 20px;
-            display: inline-flex; /* For aligning text and potential icons */
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            text-decoration: none; /* Ensure no underline */
+            text-decoration: none;
         }
 
         button:hover {
-            background-color: #1d4ed8; /* Darker blue on hover */
+            background-color: #1d4ed8;
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(37, 99, 235, 0.2);
         }
@@ -114,7 +109,7 @@
         }
 
         button:disabled {
-            background-color: #9ca3af; /* Softer disabled state */
+            background-color: #9ca3af;
             color: #e5e7eb;
             cursor: not-allowed;
             transform: none;
@@ -122,17 +117,17 @@
         }
 
         #tombolKembaliKeAwal {
-            background-color: #10b981; /* Modern green */
+            background-color: #10b981;
             margin-top: 30px;
         }
         #tombolKembaliKeAwal:hover {
-            background-color: #059669; /* Darker green on hover */
+            background-color: #059669;
             box-shadow: 0 6px 12px rgba(16, 185, 129, 0.2);
         }
 
         #totalHargaDisplay {
-            font-size: 1.5em; /* Larger for emphasis */
-            font-weight: 700; /* Bolder */
+            font-size: 1.5em;
+            font-weight: 700;
             padding: 22px;
             margin-top: 25px;
             border-radius: 12px;
@@ -141,14 +136,14 @@
             justify-content: center;
             align-items: center;
             word-break: break-word;
-            background-color: #eef2f5; /* Light, neutral background */
-            color: #2563eb; /* Matches primary button color */
+            background-color: #eef2f5;
+            color: #2563eb;
             border: 1px solid #d1d9e0;
-            transition: all 0.3s ease; /* Smooth transition for content changes */
+            transition: all 0.3s ease;
         }
 
         .error-message {
-            color: #ef4444; /* Modern red for errors */
+            color: #ef4444;
             font-size: 0.875em;
             text-align: left;
             margin-top: -18px;
@@ -156,10 +151,9 @@
             font-weight: 500;
         }
 
-        /* --- Styling untuk Payment Section --- */
         #paymentSection h2 {
-            color: #1a2533; /* Consistent with H1 */
-            font-size: 1.8em; /* Slightly smaller than H1 */
+            color: #1a2533;
+            font-size: 1.8em;
             font-weight: 700;
             margin-bottom: 30px;
             letter-spacing: -0.4px;
@@ -169,30 +163,30 @@
             margin-top: 0;
             margin-bottom: 25px;
             font-size: 1.05em;
-            color: #4a5568; /* Softer text color */
+            color: #4a5568;
             line-height: 1.7;
         }
 
         #paymentInstructions #nominalPembayaran {
-            color: #10b981; /* Modern green for emphasis */
+            color: #10b981;
             font-weight: 700;
         }
 
         #qrisImage {
-            max-width: 260px; /* Slightly smaller for modern look */
+            max-width: 260px;
             width: 65%;
             height: auto;
             margin-top: 15px;
             margin-bottom: 30px;
-            border: none; /* Remove border, shadow is enough */
-            padding: 0; /* Remove padding if border is gone */
-            border-radius: 16px; /* Consistent rounding */
+            border: none;
+            padding: 0;
+            border-radius: 16px;
             background-color: #fff;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08); /* Softer shadow */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             transition: transform 0.3s ease;
         }
         #qrisImage:hover {
-            transform: scale(1.03); /* Subtle hover effect */
+            transform: scale(1.03);
         }
 
         #transactionInfo {
@@ -201,21 +195,21 @@
             margin-top:0;
             margin-bottom: 25px;
             line-height: 1.65;
-            background-color: #f8fafc; /* Light background for info */
+            background-color: #f8fafc;
             padding: 15px 20px;
             border-radius: 10px;
             border: 1px solid #e2e8f0;
         }
 
         #transactionInfo strong {
-            color: #ea580c; /* Modern orange/amber */
+            color: #ea580c;
             font-weight: 600;
         }
 
         #refreshWarning {
-            background-color: #fef3c7; /* Softer yellow */
+            background-color: #fef3c7;
             border: 1px solid #fde68a;
-            color: #854d0e; /* Darker text for readability */
+            color: #854d0e;
             padding: 20px 25px;
             border-radius: 12px;
             margin-top: 15px;
@@ -229,40 +223,27 @@
         #refreshWarning p { margin: 0; line-height: 1.55; }
         #refreshWarning strong { font-weight: 600; }
         #refreshWarning p::before {
-            content: "💡 "; /* Using a lightbulb or other icon */
+            content: "💡 ";
             margin-right: 10px;
             font-size: 1.1em;
         }
 
         #paymentStatusDisplay {
-            font-size: 1.3em; /* Adjusted for better balance */
-            font-weight: 600; /* Slightly less bold for modern feel */
-            padding: 20px 25px; /* Adjusted padding */
+            font-size: 1.3em;
+            font-weight: 600;
+            padding: 20px 25px;
             margin-top: 0;
-            border-radius: 12px; /* Consistent rounding */
-            min-height: 65px; /* Consistent height */
+            border-radius: 12px;
+            min-height: 65px;
             display: flex;
             justify-content: center;
             align-items: center;
             word-break: break-word;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-            position: relative; /* For loading animation */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+            /* position: relative; Dihapus karena .loading-dots dihapus */
         }
 
-        .loading-dots::after {
-            content: "";
-            position: absolute;
-            right: 20px; /* Adjust as needed */
-            top: 50%;
-            transform: translateY(-50%);
-            width: 20px; /* Size of the spinner */
-            height: 20px;
-            border: 3px solid rgba(0, 0, 0, 0.1); /* Light grey track */
-            border-left-color: #2563eb; /* Primary color for spinner */
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
+        /* CSS untuk .loading-dots dan @keyframes spin DIHAPUS */
 
         .status-info { background-color: #e0f2fe; color: #0c4a6e; border: 1px solid #bae6fd; }
         .status-pending { background-color: #fef9c3; color: #713f12; border: 1px solid #fef08a; }
@@ -272,8 +253,6 @@
         #paymentSection { display: none; animation: fadeIn 0.5s ease-out forwards; }
         #autoLastChecked { font-size: 0.85em; color: #718096; margin-top: 25px; opacity: 0.8;}
 
-
-        /* --- PENYESUAIAN RESPONSIVE --- */
         @media (max-width: 600px) {
             body { font-size: 15px; margin: 20px 0; }
             .container { padding: 30px 25px; width: 92%; border-radius: 16px; }
@@ -284,7 +263,6 @@
             button { padding: 14px 22px; font-size: 0.95em; border-radius: 8px; }
             #totalHargaDisplay { font-size: 1.3em; padding: 20px; min-height: 50px; border-radius: 10px; }
             #paymentStatusDisplay { font-size: 1.2em; padding: 18px; border-radius: 10px; }
-            .loading-dots::after { width: 18px; height: 18px; border-width: 2px; }
             #paymentInstructions { font-size: 1em; }
             #qrisImage { max-width: 200px; border-radius: 12px; }
             #transactionInfo { font-size: 0.9em; padding: 12px 15px; }
@@ -297,7 +275,6 @@
             h1 { font-size: 1.5em; margin-bottom: 25px; }
             #paymentSection h2 { font-size: 1.4em; }
             #totalHargaDisplay, #paymentStatusDisplay { font-size: 1.1em; padding: 16px; }
-            .loading-dots::after { width: 16px; height: 16px; }
             #paymentInstructions { font-size: 0.95em; }
             #qrisImage { max-width: 170px; }
             #refreshWarning { font-size: 0.825em; padding: 15px; }
@@ -378,22 +355,25 @@
         let currentActiveTransactionId = null;
         let activePaymentStatusRef = null;
         let beforeUnloadListenerAdded = false;
+        let originalButtonText = tombolProsesBayar.textContent;
 
-        // --- Helper function to update payment status display and loading animation ---
-        function updatePaymentStatus(text, statusClass, isLoading) {
+        // --- Helper function to update payment status display (disederhanakan) ---
+        function updatePaymentStatus(text, statusClassSuffix) {
             paymentStatusDisplay.textContent = text;
-            paymentStatusDisplay.className = `paymentStatusDisplay ${statusClass}`;
-            if (isLoading) {
-                paymentStatusDisplay.classList.add('loading-dots');
-            } else {
-                paymentStatusDisplay.classList.remove('loading-dots');
-            }
+            const classesToRemove = [];
+            paymentStatusDisplay.classList.forEach(cls => {
+                if (cls.startsWith('status-')) {
+                    classesToRemove.push(cls);
+                }
+            });
+            paymentStatusDisplay.classList.remove(...classesToRemove);
+            paymentStatusDisplay.classList.add(`status-${statusClassSuffix}`);
         }
 
 
         function handleBeforeUnload(event) {
             event.preventDefault();
-            event.returnValue = ''; // Standard for most browsers
+            event.returnValue = '';
             return 'Apakah Anda yakin ingin meninggalkan halaman ini? Proses pembayaran mungkin belum selesai.';
         }
         function addBeforeUnloadListener() {
@@ -416,11 +396,10 @@
             jumlahAkunError.textContent = '';
             tombolProsesBayar.disabled = true;
 
-            // Animation for totalHargaDisplay when value is 0
             if (jumlahAkunInput.value === "" || isNaN(jumlah) || jumlah < ukuranBlok || jumlah % ukuranBlok !== 0) {
-                 totalHargaDisplay.style.opacity = '0.7'; // Dim it a bit
+                 totalHargaDisplay.style.opacity = '0.7';
             } else {
-                 totalHargaDisplay.style.opacity = '1'; // Full opacity
+                 totalHargaDisplay.style.opacity = '1';
             }
 
             if (isNaN(jumlah) && jumlahAkunInput.value !== "") {
@@ -455,13 +434,7 @@
         }
         async function kirimPesananKeSheet(payload) {
             tombolProsesBayar.disabled = true;
-            tombolProsesBayar.innerHTML = `
-                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Memproses...
-            `;
+            tombolProsesBayar.textContent = "Memproses..."; // Teks loading sederhana
             try {
                 const response = await fetch(APPS_SCRIPT_WEB_APP_URL, {
                     method: 'POST', mode: 'cors', cache: 'no-cache',
@@ -469,7 +442,7 @@
                     body: JSON.stringify(payload), redirect: 'follow'
                 });
                 tombolProsesBayar.disabled = false;
-                tombolProsesBayar.textContent = "Lanjut ke Pembayaran";
+                tombolProsesBayar.textContent = originalButtonText;
                 if (!response.ok) {
                     const errorText = await response.text();
                     throw new Error(`Gagal server Apps Script: ${response.status} ${response.statusText}. Detail: ${errorText}`);
@@ -487,7 +460,7 @@
             } catch (error) {
                 alert(`Kesalahan catat pesanan: ${error.message}`);
                 tombolProsesBayar.disabled = false;
-                tombolProsesBayar.textContent = "Lanjut ke Pembayaran";
+                tombolProsesBayar.textContent = originalButtonText;
                 return null;
             }
         }
@@ -497,9 +470,7 @@
             tombolKembaliKeAwal.style.display = 'none';
 
             orderFormContainer.style.display = 'block';
-             // Apply fade in animation for order form
             orderFormContainer.style.animation = 'fadeIn 0.5s ease-out forwards';
-
 
             if (kategoriAkunSelect.options.length > 0) {
                 kategoriAkunSelect.value = kategoriAkunSelect.options[0].value;
@@ -512,12 +483,14 @@
                 activePaymentStatusRef = null;
             }
             removeBeforeUnloadListener();
-            updatePaymentStatus("Menunggu Pembayaran...", "status-pending", false); // Reset status
+            updatePaymentStatus("Menunggu Pembayaran...", "pending");
+            autoLastChecked.textContent = '';
             console.log("Dikembalikan ke halaman awal (form pemesanan).");
         }
 
         tombolProsesBayar.addEventListener('click', async function() {
             if (tombolProsesBayar.disabled) return;
+            originalButtonText = this.textContent; // Simpan teks asli saat ini
             const kategoriText = kategoriAkunSelect.options[kategoriAkunSelect.selectedIndex].text;
             const jumlah = parseInt(jumlahAkunInput.value);
             const harga = (jumlah / ukuranBlok) * hargaPerBlok;
@@ -530,19 +503,17 @@
             if (idTransaksiDariSheet) {
                 currentActiveTransactionId = idTransaksiDariSheet;
 
-                orderFormContainer.style.animation = 'none'; // Remove previous animation
+                orderFormContainer.style.animation = 'none';
                 orderFormContainer.style.display = 'none';
 
                 paymentSection.style.display = 'block';
-                // Apply fade in animation for payment section
                 paymentSection.style.animation = 'fadeIn 0.5s ease-out forwards';
-
 
                 nominalPembayaran.textContent = formatRupiah(harga);
                 qrisImage.src = STATIC_QRIS_IMAGE_URL;
                 transactionInfo.innerHTML = `ID Transaksi: <strong>${currentActiveTransactionId}</strong><br>Selesaikan pembayaran & simpan ID. Status update otomatis.`;
 
-                updatePaymentStatus("Menunggu Pembayaran...", "status-pending", true); // Initial state with loading
+                updatePaymentStatus("Menunggu Pembayaran...", "pending");
 
                 refreshWarning.style.display = 'block';
                 tombolKembaliKeAwal.style.display = 'none';
@@ -556,7 +527,7 @@
             const path = `pembayaran/${transactionId}`;
             activePaymentStatusRef = database.ref(path);
 
-            updatePaymentStatus("Memeriksa Status...", "status-info", true); // Indicate checking
+            updatePaymentStatus("Memeriksa Status...", "info");
 
             activePaymentStatusRef.on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -567,36 +538,32 @@
                     console.log(`Firebase status for ${transactionId}: ${statusDariFirebase}`);
 
                     if (statusDariFirebase.toLowerCase() === STATUS_BERHASIL_DARI_SHEET.toLowerCase()) {
-                        updatePaymentStatus("Pembayaran Berhasil!", "status-success", false);
-                        refreshWarning.style.display = 'none';
-                        tombolKembaliKeAwal.style.display = 'inline-block'; // Show as inline-block
-                        removeBeforeUnloadListener();
-                        if (activePaymentStatusRef) activePaymentStatusRef.off(); // Stop listening once successful
-                        // Animation for success
-                        paymentStatusDisplay.style.transform = 'scale(1.05)';
-                        setTimeout(() => { paymentStatusDisplay.style.transform = 'scale(1)'; }, 200);
-
-                    } else if (statusDariFirebase === "Menunggu Pembayaran") {
-                        updatePaymentStatus("Menunggu Pembayaran...", "status-pending", true);
-                    } else if (statusDariFirebase === "Kadaluarsa" || statusDariFirebase === "Dibatalkan") {
-                        updatePaymentStatus(`Transaksi ${statusDariFirebase}`, "status-error", false);
+                        updatePaymentStatus("Pembayaran Berhasil!", "success");
                         refreshWarning.style.display = 'none';
                         tombolKembaliKeAwal.style.display = 'inline-block';
                         removeBeforeUnloadListener();
                         if (activePaymentStatusRef) activePaymentStatusRef.off();
-                    } else { // Other statuses considered pending or in process
-                        updatePaymentStatus(statusDariFirebase, "status-info", true);
+                        paymentStatusDisplay.style.transform = 'scale(1.05)';
+                        setTimeout(() => { paymentStatusDisplay.style.transform = 'scale(1)'; }, 200);
+
+                    } else if (statusDariFirebase === "Menunggu Pembayaran") {
+                        updatePaymentStatus("Menunggu Pembayaran...", "pending");
+                    } else if (statusDariFirebase === "Kadaluarsa" || statusDariFirebase === "Dibatalkan") {
+                        updatePaymentStatus(`Transaksi ${statusDariFirebase}`, "error");
+                        refreshWarning.style.display = 'none';
+                        tombolKembaliKeAwal.style.display = 'inline-block';
+                        removeBeforeUnloadListener();
+                        if (activePaymentStatusRef) activePaymentStatusRef.off();
+                    } else {
+                        updatePaymentStatus(statusDariFirebase, "info");
                     }
                 } else {
-                    // Initial state or if data is somehow removed before explicit status update
-                    // This might also mean the transaction ID doesn't exist yet in Firebase path `pembayaran/transactionId`
-                    // which can happen briefly if Apps Script hasn't written the initial status.
-                    updatePaymentStatus("Menunggu konfirmasi server...", "status-pending", true);
+                    updatePaymentStatus("Menunggu konfirmasi server...", "pending");
                     console.log(`No payment status data found yet for ${transactionId} or path doesn't exist.`);
                 }
             }, (error) => {
                 console.error("Firebase read error:", error);
-                updatePaymentStatus("Gagal Cek Status (Error)", "status-error", false);
+                updatePaymentStatus("Gagal Cek Status (Error)", "error");
                 autoLastChecked.textContent = 'Gagal menghubungi server Firebase.';
                 tombolKembaliKeAwal.style.display = 'inline-block';
                 removeBeforeUnloadListener();
@@ -607,11 +574,10 @@
         jumlahAkunInput.addEventListener('input', perbaruiTotalHarga);
         tombolKembaliKeAwal.addEventListener('click', kembaliKeHalamanAwal);
 
-        // Initial call to set correct state if input has pre-filled value (e.g. browser cache)
         perbaruiTotalHarga();
-        // Initialize with form visible
         orderFormContainer.style.display = 'block';
         paymentSection.style.display = 'none';
+        originalButtonText = tombolProsesBayar.textContent; // Inisialisasi teks tombol asli
     </script>
 </body>
 </html>
