@@ -155,6 +155,7 @@
             text-align: left;
             font-size: 0.95em;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: none; /* Sembunyikan secara default */
         }
         #refreshWarning p {
             margin: 0;
@@ -194,7 +195,7 @@
         #autoLastChecked { font-size: 0.88em; color: #868e96; margin-top: 20px; }
 
 
-        /* --- PENYESUAIAN RESPONSIVE (TETAP SAMA DASARNYA, mungkin perlu fine-tuning jika ada elemen baru) --- */
+        /* --- PENYESUAIAN RESPONSIVE --- */
         @media (max-width: 600px) {
             body {
                 font-size: 15px;
@@ -211,7 +212,7 @@
                 margin-bottom: 25px;
             }
              #paymentSection h2 {
-                font-size: 1.7em; /* Sesuaikan H2 di payment section */
+                font-size: 1.7em;
             }
             label {
                 font-size: 0.95em;
@@ -233,7 +234,7 @@
                 min-height: 45px;
                 border-radius: 8px;
             }
-             #paymentStatusDisplay { /* Sesuaikan payment status display */
+             #paymentStatusDisplay {
                 font-size: 1.25em;
                 padding: 20px;
                 border-radius: 10px;
@@ -242,14 +243,14 @@
                 font-size: 0.95em;
             }
             #qrisImage {
-                max-width: 220px; /* Sesuaikan ukuran QRIS di mobile */
+                max-width: 220px;
                 padding: 8px;
                 border-radius: 10px;
             }
             #transactionInfo {
                 font-size: 0.9em;
             }
-            #refreshWarning { /* Sesuaikan warning box di mobile */
+            #refreshWarning {
                 padding: 15px;
                 font-size: 0.9em;
             }
@@ -325,7 +326,7 @@
     <script>
         // Konfigurasi Firebase Anda
         const firebaseConfig = {
-          apiKey: "AIzaSyDA_T-LRjANUHG1ZLqKG1vwD_Wu9hpzWz4", // HATI-HATI: API Key terlihat publik. Untuk produksi, pertimbangkan keamanan.
+          apiKey: "AIzaSyDA_T-LRjANUHG1ZLqKG1vwD_Wu9hpzWz4", // HATI-HATI: API Key terlihat publik. Untuk produksi, pertimbangkan keamanan Firebase Rules.
           authDomain: "statuspembayaran-b7a1f.firebaseapp.com",
           databaseURL: "https://statuspembayaran-b7a1f-default-rtdb.asia-southeast1.firebasedatabase.app",
           projectId: "statuspembayaran-b7a1f",
@@ -354,7 +355,7 @@
         const transactionInfo = document.getElementById('transactionInfo');
         const paymentStatusDisplay = document.getElementById('paymentStatusDisplay');
         const autoLastChecked = document.getElementById('autoLastChecked');
-        const refreshWarning = document.getElementById('refreshWarning'); // Ambil elemen warning
+        const refreshWarning = document.getElementById('refreshWarning');
 
         const STATIC_QRIS_IMAGE_URL = "https://raw.githubusercontent.com/rasyaacc/Payment-Rasya/2cfca336c23a0350065fbdd9e69ad0eceacf6528/Qris-SP.jpeg";
 
@@ -364,14 +365,13 @@
 
         let currentActiveTransactionId = null;
         let activePaymentStatusRef = null;
-        let beforeUnloadListenerAdded = false; // Flag untuk mencegah penambahan listener berulang
+        let beforeUnloadListenerAdded = false;
 
-        // Fungsi untuk menangani event beforeunload
         function handleBeforeUnload(event) {
-            // Standar untuk menampilkan prompt konfirmasi
             event.preventDefault();
-            event.returnValue = ''; // Diperlukan untuk beberapa browser
-            return 'Apakah Anda yakin ingin meninggalkan halaman ini? Proses pembayaran mungkin belum selesai.'; // Pesan ini mungkin tidak ditampilkan oleh semua browser modern
+            event.returnValue = ''; // Diperlukan untuk beberapa browser (Chrome)
+            // Pesan ini mungkin tidak ditampilkan oleh browser modern, mereka akan menampilkan pesan default.
+            return 'Apakah Anda yakin ingin meninggalkan halaman ini? Proses pembayaran mungkin belum selesai.';
         }
 
         function addBeforeUnloadListener() {
@@ -389,7 +389,6 @@
                 console.log("BeforeUnload listener dihapus.");
             }
         }
-
 
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
@@ -442,13 +441,13 @@
             try {
                 const response = await fetch(APPS_SCRIPT_WEB_APP_URL, {
                     method: 'POST',
-                    mode: 'cors', // Perlu jika Apps Script Anda diset untuk mengizinkan CORS
+                    mode: 'cors',
                     cache: 'no-cache',
                     headers: {
                          'Content-Type': 'text/plain;charset=UTF-8',
                     },
                     body: JSON.stringify(payload),
-                    redirect: 'follow' // Mengikuti redirect jika ada
+                    redirect: 'follow'
                 });
 
                 tombolProsesBayar.disabled = false;
@@ -467,7 +466,6 @@
                     result = JSON.parse(resultText);
                 } catch (e) {
                     console.error("Gagal mem-parse respons Apps Script sebagai JSON:", resultText);
-                    // Jika parsing gagal, mungkin ada pesan error HTML dari Apps Script
                     if (resultText.toLowerCase().includes("script function not found")) {
                          throw new Error(`Fungsi doPost tidak ditemukan atau tidak di-deploy dengan benar di Google Apps Script.`);
                     }
@@ -487,6 +485,29 @@
                 tombolProsesBayar.textContent = "Lanjut ke Pembayaran";
                 return null;
             }
+        }
+
+        function kembaliKeHalamanAwal() {
+            paymentSection.style.display = 'none';
+            refreshWarning.style.display = 'none';
+
+            orderFormContainer.style.display = 'block';
+
+            if (kategoriAkunSelect.options.length > 0) {
+                kategoriAkunSelect.value = kategoriAkunSelect.options[0].value;
+            }
+            jumlahAkunInput.value = '';
+
+            perbaruiTotalHarga();
+
+            currentActiveTransactionId = null;
+            if (activePaymentStatusRef) {
+                activePaymentStatusRef.off();
+                activePaymentStatusRef = null;
+            }
+            removeBeforeUnloadListener();
+
+            console.log("Dikembalikan ke halaman awal (form pemesanan).");
         }
 
         tombolProsesBayar.addEventListener('click', async function() {
@@ -513,23 +534,23 @@
                 currentActiveTransactionId = idTransaksiDariSheet;
 
                 orderFormContainer.style.display = 'none';
-                paymentSection.style.display = 'block'; // Tampilkan section pembayaran
+                paymentSection.style.display = 'block';
 
                 nominalPembayaran.textContent = formatRupiah(harga);
                 qrisImage.src = STATIC_QRIS_IMAGE_URL;
                 transactionInfo.innerHTML = `ID Transaksi Anda: <strong>${currentActiveTransactionId}</strong><br>Harap selesaikan pembayaran dan simpan ID ini. Status akan terupdate otomatis di bawah.`;
                 paymentStatusDisplay.textContent = 'Menunggu Pembayaran...';
                 paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
-                refreshWarning.style.display = 'block'; // Tampilkan peringatan refresh
+                refreshWarning.style.display = 'block';
 
-                addBeforeUnloadListener(); // Tambahkan listener untuk mencegah refresh/close
+                addBeforeUnloadListener();
                 mulaiMendengarkanStatusPembayaran(currentActiveTransactionId);
             }
         });
 
         function mulaiMendengarkanStatusPembayaran(transactionId) {
             if (activePaymentStatusRef) {
-                activePaymentStatusRef.off();
+                activePaymentStatusRef.off(); // Hentikan listener lama jika ada
             }
             console.log(`Memulai listener untuk status ID Transaksi: ${transactionId}`);
 
@@ -542,47 +563,69 @@
                 autoLastChecked.textContent = 'Status dicek: ' + timestamp.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 console.log("Data status diterima dari Firebase:", data);
 
+                if (!currentActiveTransactionId || transactionId !== currentActiveTransactionId) {
+                     // Jika listener ini bukan untuk transaksi aktif saat ini, hentikan.
+                    if (activePaymentStatusRef) activePaymentStatusRef.off();
+                    return;
+                }
+
                 if (data && data.status) {
                     if (data.status.trim().toLowerCase() === STATUS_BERHASIL_DARI_SHEET.trim().toLowerCase()) {
                         paymentStatusDisplay.textContent = 'Pembayaran Berhasil!';
                         paymentStatusDisplay.className = 'paymentStatusDisplay status-success';
-                        refreshWarning.style.display = 'none'; // Sembunyikan peringatan refresh
-                        removeBeforeUnloadListener(); // Hapus listener setelah pembayaran berhasil
-                        if(activePaymentStatusRef) activePaymentStatusRef.off();
-                        console.log(`Pembayaran ${transactionId} berhasil. Listener dihentikan.`);
+                        
+                        if(activePaymentStatusRef) activePaymentStatusRef.off(); // Hentikan listener ini
+                        activePaymentStatusRef = null; // Tandai sudah tidak aktif
+                        console.log(`Pembayaran ${transactionId} berhasil. Listener spesifik ini dihentikan.`);
+
+                        alert('Pembayaran berhasil! Anda akan dikembalikan ke halaman pemesanan.');
+                        setTimeout(() => {
+                            // Pastikan hanya kembali jika ini adalah transaksi yang sedang aktif
+                            if (transactionId === currentActiveTransactionId) {
+                                kembaliKeHalamanAwal();
+                            }
+                        }, 500);
+
                     } else {
                         paymentStatusDisplay.textContent = `Status: ${data.status}`;
                         paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
-                        refreshWarning.style.display = 'block'; // Pastikan tetap terlihat jika status belum berhasil
-                        addBeforeUnloadListener(); // Pastikan listener tetap ada
+                        refreshWarning.style.display = 'block';
+                        addBeforeUnloadListener();
                     }
                 } else if (paymentStatusDisplay.textContent.includes("Menunggu Pembayaran")) {
-                    // Biarkan status "Menunggu Pembayaran"
                     refreshWarning.style.display = 'block';
                     addBeforeUnloadListener();
-                } else {
+                } else if (orderFormContainer.style.display === 'none') { // Hanya update jika masih di halaman pembayaran
                     paymentStatusDisplay.textContent = 'Data transaksi tidak ditemukan/belum update.';
                     paymentStatusDisplay.className = 'paymentStatusDisplay status-notfound';
-                    refreshWarning.style.display = 'block'; // Tetap tampilkan warning jika data tidak ditemukan
+                    refreshWarning.style.display = 'block';
                     addBeforeUnloadListener();
                 }
             }, (error) => {
                 console.error("Error membaca status dari Firebase:", error);
-                paymentStatusDisplay.textContent = 'Gagal mengambil status dari Firebase.';
-                paymentStatusDisplay.className = 'paymentStatusDisplay status-error';
-                refreshWarning.style.display = 'block'; // Tetap tampilkan warning jika ada error
-                addBeforeUnloadListener();
+                if (orderFormContainer.style.display === 'none') { // Hanya update jika masih di halaman pembayaran
+                    paymentStatusDisplay.textContent = 'Gagal mengambil status dari Firebase.';
+                    paymentStatusDisplay.className = 'paymentStatusDisplay status-error';
+                    refreshWarning.style.display = 'block';
+                    addBeforeUnloadListener();
+                }
             });
         }
 
         jumlahAkunInput.addEventListener('input', perbaruiTotalHarga);
         window.onload = () => {
             perbaruiTotalHarga();
-            if (paymentSection.style.display === 'block') { // Jika payment section sudah terlihat saat load
+            // Cek apakah URL mengandung parameter yang menandakan kembali dari pembayaran (jika ada redirect full page)
+            // Untuk SPA seperti ini, lebih baik cek state elemen
+            if (paymentSection.style.display === 'block') {
                  refreshWarning.style.display = 'block';
-                 addBeforeUnloadListener(); // Tambahkan listener jika halaman di-load ulang saat di payment section
+                 // Jika ada currentActiveTransactionId (misal dari session/local storage jika halaman refresh), mulai listener lagi
+                 // Namun untuk kasus ini, state JavaScript akan hilang saat refresh, jadi asumsi currentActiveTransactionId null
+                 // Jika ingin persisten antar refresh, currentActiveTransactionId perlu disimpan.
+                 // Untuk sekarang, jika halaman di-refresh saat di paymentSection, listener beforeunload akan aktif.
+                 addBeforeUnloadListener();
             } else {
-                 refreshWarning.style.display = 'none'; // Sembunyikan by default
+                 refreshWarning.style.display = 'none';
             }
         };
     </script>
