@@ -12,181 +12,275 @@
             align-items: center;
             min-height: 100vh;
             margin: 20px 0;
-            background-color: #f8f9fa; /* Sedikit lebih terang dari sebelumnya */
-            color: #343a40; /* Warna teks utama sedikit lebih gelap */
+            background-color: #f8f9fa;
+            color: #343a40;
             font-size: 16px;
-            line-height: 1.6; /* Meningkatkan keterbacaan */
+            line-height: 1.6;
         }
         .container {
             background-color: #ffffff;
-            padding: 35px 45px; /* Sedikit tambah padding */
-            border-radius: 16px; /* Radius lebih besar untuk kesan modern */
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08); /* Shadow lebih halus dan menyebar */
+            padding: 35px 45px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
             text-align: center;
             width: 90%;
-            max-width: 550px; /* Sedikit lebih lebar untuk form */
+            max-width: 550px;
             margin-bottom: 30px;
-            transition: transform 0.2s ease-out; /* Transisi halus untuk interaksi */
+            transition: transform 0.2s ease-out;
         }
-        /* Menambahkan sedikit efek saat hover pada container jika diinginkan
-        .container:hover {
-            transform: translateY(-3px);
-        }
-        */
-        h1, h2 {
+        h1 { /* Styling khusus untuk H1 di form pemesanan */
             color: #2c3e50;
-            margin-bottom: 30px; /* Sedikit lebih banyak ruang */
+            margin-bottom: 30px;
             font-size: 1.9em;
-            font-weight: 600; /* Sedikit lebih tebal */
+            font-weight: 600;
         }
         label {
             display: block;
-            margin-bottom: 10px; /* Ruang lebih untuk label */
-            font-weight: 500; /* Sedikit lebih ringan dari sebelumnya, tapi masih jelas */
+            margin-bottom: 10px;
+            font-weight: 500;
             color: #495057;
             text-align: left;
             font-size: 1em;
         }
         input[type="text"], input[type="number"], select {
-            width: calc(100% - 28px); /* Disesuaikan dengan padding baru */
-            padding: 14px; /* Padding lebih nyaman */
+            width: calc(100% - 28px);
+            padding: 14px;
             margin-bottom: 22px;
-            border: 1px solid #ced4da; /* Border lebih lembut */
-            border-radius: 8px; /* Radius lebih besar */
+            border: 1px solid #ced4da;
+            border-radius: 8px;
             box-sizing: border-box;
             font-size: 1em;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
         input[type="text"]:focus, input[type="number"]:focus, select:focus {
-            border-color: #80bdff; /* Warna border saat fokus (mirip Bootstrap) */
+            border-color: #80bdff;
             outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Efek glow saat fokus */
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
         button {
-            background-color: #007bff; /* Biru yang lebih standar dan profesional */
+            background-color: #007bff;
             color: white;
-            padding: 14px 25px; /* Padding lebih besar */
+            padding: 14px 25px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1.05em; /* Font sedikit lebih besar */
+            font-size: 1.05em;
             font-weight: 600;
             transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-            margin-top: 15px; /* Margin atas lebih jelas */
+            margin-top: 15px;
         }
         button:hover {
-            background-color: #0056b3; /* Warna hover lebih gelap */
-            transform: translateY(-2px); /* Efek angkat sedikit */
+            background-color: #0056b3;
+            transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
         }
         button:active {
-            transform: translateY(0px); /* Kembali saat diklik */
+            transform: translateY(0px);
             box-shadow: none;
         }
         button:disabled {
-            background-color: #adb5bd; /* Warna disabled lebih jelas */
+            background-color: #adb5bd;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
-        #totalHargaDisplay, #paymentStatusDisplay {
-            font-size: 1.3em; /* Ukuran font disesuaikan */
+        #totalHargaDisplay { /* Hanya untuk harga di form */
+            font-size: 1.3em;
             font-weight: bold;
-            padding: 20px; /* Padding lebih luas */
+            padding: 20px;
             margin-top: 20px;
-            border-radius: 10px; /* Radius lebih besar */
+            border-radius: 10px;
             min-height: 55px;
             display: flex;
             justify-content: center;
             align-items: center;
             word-break: break-word;
+            background-color: #e9ecef;
+            color: #007bff;
+            border: 1px solid #dee2e6;
         }
-        .harga-display { background-color: #e9ecef; color: #007bff; border: 1px solid #dee2e6; }
         .error-message { color: #dc3545; font-size: 0.9em; text-align: left; margin-top: -15px; margin-bottom: 15px; }
-        
-        /* Status colors slightly refined for better contrast/appeal */
-        .status-pending { background-color: #fff3cd; color: #664d03; border: 1px solid #ffeeba; }
-        .status-success { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
-        .status-error, .status-notfound { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .status-info { background-color: #cff4fc; color: #055160; border: 1px solid #b6effb; }
-        
-        #paymentInstructions { margin-top: 25px; font-size: 1.05em; color: #343a40; line-height: 1.7; }
-        #qrisImage { 
-            max-width: 65%; /* Sedikit lebih kecil agar tidak mendominasi */
-            height: auto; 
-            margin-top: 20px; 
-            border: 1px solid #dee2e6; 
-            padding: 8px; /* Padding di dalam border gambar */
-            border-radius: 12px; /* Radius untuk gambar */
-            background-color: #fff; /* Latar belakang putih jika gambar transparan */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* Shadow halus untuk gambar */
+
+        /* --- Styling untuk Payment Section --- */
+        #paymentSection h2 {
+            color: #2c3e50; /* Mirip H1 */
+            font-size: 2em; /* Sedikit lebih besar dan tegas */
+            font-weight: 700;
+            margin-bottom: 25px;
         }
-        #transactionInfo { font-size: 0.95em; color: #495057; margin-top:15px; line-height: 1.5; }
+        #paymentInstructions {
+            margin-top: 0; /* Dihapus karena H2 sudah punya margin bawah */
+            margin-bottom: 20px;
+            font-size: 1.05em;
+            color: #343a40;
+            line-height: 1.7;
+        }
+        #paymentInstructions #nominalPembayaran {
+            color: #28a745; /* Hijau untuk nominal yang harus dibayar */
+            font-weight: 700; /* Lebih tebal */
+        }
+        #qrisImage {
+            max-width: 280px; /* Ukuran QRIS dibuat lebih pasti, sesuaikan jika perlu */
+            width: 70%; /* Responsif */
+            height: auto;
+            margin-top: 10px;
+            margin-bottom: 25px; /* Ruang setelah QRIS */
+            border: 2px solid #e9ecef; /* Border lebih halus */
+            padding: 10px;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.07);
+        }
+        #transactionInfo {
+            font-size: 1em; /* Ukuran font normal */
+            color: #495057;
+            margin-top:0;
+            margin-bottom: 20px; /* Ruang sebelum warning */
+            line-height: 1.6;
+        }
+        #transactionInfo strong {
+            color: #fd7e14; /* Oranye untuk ID Transaksi */
+            font-weight: 600;
+        }
 
-        #paymentSection { display: none; }
-        #autoLastChecked { font-size: 0.85em; color: #6c757d; margin-top: 20px; }
+        /* --- Peringatan Jangan Refresh --- */
+        #refreshWarning {
+            background-color: #fff3cd; /* Kuning muda untuk peringatan */
+            border: 1px solid #ffeeba;
+            color: #856404; /* Warna teks untuk kontras dengan background kuning */
+            padding: 18px 22px;
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            text-align: left;
+            font-size: 0.95em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        #refreshWarning p {
+            margin: 0;
+            line-height: 1.5;
+        }
+        #refreshWarning strong { /* Untuk penekanan kata */
+            font-weight: 600;
+        }
+        /* Icon sederhana menggunakan CSS content (opsional) */
+        #refreshWarning p::before {
+            content: "⚠️ "; /* Emoji peringatan */
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
 
-        /* --- PENYESUAIAN RESPONSIVE (TETAP SAMA DARI ASLINYA) --- */
+
+        #paymentStatusDisplay {
+            font-size: 1.4em; /* Lebih besar dan jelas */
+            font-weight: bold;
+            padding: 22px;
+            margin-top: 0; /* Dihapus karena warning sudah punya margin bawah */
+            border-radius: 12px; /* Sudut lebih melengkung */
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            word-break: break-word;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        /* Warna Status (sedikit disesuaikan untuk profesionalisme) */
+        .status-info { background-color: #cce5ff; color: #004085; border: 1px solid #b8daff; } /* Biru muda info */
+        .status-pending { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; } /* Kuning untuk pending */
+        .status-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; } /* Hijau untuk sukses */
+        .status-error, .status-notfound { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; } /* Merah untuk error */
+
+        #paymentSection { display: none; } /* Awalnya disembunyikan */
+        #autoLastChecked { font-size: 0.88em; color: #868e96; margin-top: 20px; }
+
+
+        /* --- PENYESUAIAN RESPONSIVE (TETAP SAMA DASARNYA, mungkin perlu fine-tuning jika ada elemen baru) --- */
         @media (max-width: 600px) {
             body {
                 font-size: 15px;
                 margin: 10px 0;
             }
             .container {
-                padding: 25px 20px; /* Disesuaikan sedikit */
+                padding: 25px 20px;
                 width: 95%;
                 margin-bottom: 20px;
-                border-radius: 12px; /* Sesuaikan dengan container utama */
+                border-radius: 12px;
             }
-            h1, h2 {
-                font-size: 1.6em; /* Disesuaikan */
+            h1 {
+                font-size: 1.6em;
                 margin-bottom: 25px;
+            }
+             #paymentSection h2 {
+                font-size: 1.7em; /* Sesuaikan H2 di payment section */
             }
             label {
                 font-size: 0.95em;
             }
             input[type="text"], input[type="number"], select {
-                padding: 12px; /* Disesuaikan */
+                padding: 12px;
                 font-size: 0.95em;
                 margin-bottom: 18px;
-                border-radius: 6px; /* Sesuaikan */
+                border-radius: 6px;
             }
             button {
-                padding: 12px 20px; /* Disesuaikan */
-                font-size: 1em; /* Disesuaikan */
-                border-radius: 6px; /* Sesuaikan */
+                padding: 12px 20px;
+                font-size: 1em;
+                border-radius: 6px;
             }
-            #totalHargaDisplay, #paymentStatusDisplay {
+            #totalHargaDisplay {
                 font-size: 1.2em;
                 padding: 18px;
                 min-height: 45px;
-                border-radius: 8px; /* Sesuaikan */
+                border-radius: 8px;
+            }
+             #paymentStatusDisplay { /* Sesuaikan payment status display */
+                font-size: 1.25em;
+                padding: 20px;
+                border-radius: 10px;
             }
             #paymentInstructions {
-                font-size: 0.95em; /* Disesuaikan */
+                font-size: 0.95em;
             }
             #qrisImage {
-                max-width: 75%; /* Disesuaikan */
-                border-radius: 10px; /* Sesuaikan */
+                max-width: 220px; /* Sesuaikan ukuran QRIS di mobile */
+                padding: 8px;
+                border-radius: 10px;
             }
             #transactionInfo {
-                font-size: 0.9em; /* Disesuaikan */
+                font-size: 0.9em;
+            }
+            #refreshWarning { /* Sesuaikan warning box di mobile */
+                padding: 15px;
+                font-size: 0.9em;
+            }
+            #refreshWarning p::before {
+                font-size: 1em;
             }
         }
 
         @media (max-width: 400px) {
             .container {
-                padding: 20px 15px; /* Disesuaikan */
+                padding: 20px 15px;
             }
-             h1, h2 {
-                font-size: 1.4em; /* Disesuaikan */
+             h1 {
+                font-size: 1.4em;
+            }
+            #paymentSection h2 {
+                font-size: 1.5em;
             }
             #totalHargaDisplay, #paymentStatusDisplay {
                 font-size: 1.1em;
                 padding: 15px;
             }
             #paymentInstructions {
-                font-size: 0.9em; /* Disesuaikan */
+                font-size: 0.9em;
+            }
+            #qrisImage {
+                max-width: 180px;
+            }
+             #refreshWarning {
+                font-size: 0.85em;
+                padding: 12px;
             }
         }
     </style>
@@ -194,7 +288,7 @@
 <body>
     <div class="container" id="orderFormContainer">
         <h1>📝 Form Pemesanan Akun</h1>
-        
+
         <label for="kategoriAkun">1. Kategori Akun:</label>
         <select id="kategoriAkun">
             <option value="300_followers">300 Followers</option>
@@ -206,7 +300,7 @@
         <div id="jumlahAkunError" class="error-message"></div>
 
         <label for="totalHargaDisplay">3. Total Harga:</label>
-        <div id="totalHargaDisplay" class="harga-display">Rp 0</div>
+        <div id="totalHargaDisplay">Rp 0</div>
 
         <button id="tombolProsesBayar" disabled>Lanjut ke Pembayaran</button>
     </div>
@@ -214,8 +308,13 @@
     <div class="container" id="paymentSection">
         <h2>💰 Pembayaran & Status</h2>
         <p id="paymentInstructions">Silakan scan kode QRIS di bawah ini dan lakukan pembayaran sebesar <strong id="nominalPembayaran">Rp 0</strong>.</p>
-        <img id="qrisImage" src="https_placeholder_qris.png" alt="Scan QRIS untuk Pembayaran"> 
+        <img id="qrisImage" src="https_placeholder_qris.png" alt="Scan QRIS untuk Pembayaran">
         <div id="transactionInfo"></div>
+
+        <div id="refreshWarning">
+            <p><strong>PERHATIAN:</strong> Untuk kelancaran proses, mohon untuk <strong>tidak me-refresh</strong> halaman ini hingga status pembayaran Anda berubah menjadi "Pembayaran Berhasil".</p>
+        </div>
+
         <div id="paymentStatusDisplay" class="status-info">Menunggu Pembayaran...</div>
         <p id="autoLastChecked"></p>
     </div>
@@ -239,7 +338,6 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // URL Google Apps Script Web App Anda
         const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxI2Ma8oK6s039PZyS0cIAY5T-70eo9Jp0PofnhBBCtN5SXrfjEeX9_chOeWx_feihmdw/exec';
 
         const kategoriAkunSelect = document.getElementById('kategoriAkun');
@@ -256,8 +354,9 @@
         const transactionInfo = document.getElementById('transactionInfo');
         const paymentStatusDisplay = document.getElementById('paymentStatusDisplay');
         const autoLastChecked = document.getElementById('autoLastChecked');
-        
-        const STATIC_QRIS_IMAGE_URL = "https://raw.githubusercontent.com/rasyaacc/Payment-Rasya/2cfca336c23a0350065fbdd9e69ad0eceacf6528/Qris-SP.jpeg"; 
+        const refreshWarning = document.getElementById('refreshWarning'); // Ambil elemen warning
+
+        const STATIC_QRIS_IMAGE_URL = "https://raw.githubusercontent.com/rasyaacc/Payment-Rasya/2cfca336c23a0350065fbdd9e69ad0eceacf6528/Qris-SP.jpeg";
 
         const hargaPerBlok = 100000;
         const ukuranBlok = 3;
@@ -265,6 +364,32 @@
 
         let currentActiveTransactionId = null;
         let activePaymentStatusRef = null;
+        let beforeUnloadListenerAdded = false; // Flag untuk mencegah penambahan listener berulang
+
+        // Fungsi untuk menangani event beforeunload
+        function handleBeforeUnload(event) {
+            // Standar untuk menampilkan prompt konfirmasi
+            event.preventDefault();
+            event.returnValue = ''; // Diperlukan untuk beberapa browser
+            return 'Apakah Anda yakin ingin meninggalkan halaman ini? Proses pembayaran mungkin belum selesai.'; // Pesan ini mungkin tidak ditampilkan oleh semua browser modern
+        }
+
+        function addBeforeUnloadListener() {
+            if (!beforeUnloadListenerAdded) {
+                window.addEventListener('beforeunload', handleBeforeUnload);
+                beforeUnloadListenerAdded = true;
+                console.log("BeforeUnload listener ditambahkan.");
+            }
+        }
+
+        function removeBeforeUnloadListener() {
+            if (beforeUnloadListenerAdded) {
+                window.removeEventListener('beforeunload', handleBeforeUnload);
+                beforeUnloadListenerAdded = false;
+                console.log("BeforeUnload listener dihapus.");
+            }
+        }
+
 
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
@@ -317,33 +442,37 @@
             try {
                 const response = await fetch(APPS_SCRIPT_WEB_APP_URL, {
                     method: 'POST',
-                    cache: 'no-cache', // Penting untuk menghindari masalah cache dengan Apps Script
+                    mode: 'cors', // Perlu jika Apps Script Anda diset untuk mengizinkan CORS
+                    cache: 'no-cache',
                     headers: {
-                         'Content-Type': 'text/plain;charset=UTF-8', // Sesuai dengan apa yang mungkin diharapkan Apps Script jika tidak menggunakan `application/json`
+                         'Content-Type': 'text/plain;charset=UTF-8',
                     },
-                    body: JSON.stringify(payload) // Payload dikirim sebagai string JSON
+                    body: JSON.stringify(payload),
+                    redirect: 'follow' // Mengikuti redirect jika ada
                 });
-                
+
                 tombolProsesBayar.disabled = false;
                 tombolProsesBayar.textContent = "Lanjut ke Pembayaran";
 
                 if (!response.ok) {
-                    const errorText = await response.text(); // Coba dapatkan teks error jika ada
+                    const errorText = await response.text();
                     console.error('Network response was not ok.', response.status, errorText);
                     throw new Error(`Gagal menghubungi server Apps Script: ${response.status} ${response.statusText}. Detail: ${errorText}`);
                 }
-                
-                const resultText = await response.text(); // Dapatkan respons sebagai teks
+
+                const resultText = await response.text();
                 console.log('Teks mentah dari Apps Script:', resultText);
-                // Coba parse sebagai JSON. Jika gagal, mungkin responsnya bukan JSON yang valid.
                 let result;
                 try {
                     result = JSON.parse(resultText);
                 } catch (e) {
                     console.error("Gagal mem-parse respons Apps Script sebagai JSON:", resultText);
-                    throw new Error(`Respons dari server tidak valid (bukan JSON): ${resultText.substring(0, 100)}...`);
+                    // Jika parsing gagal, mungkin ada pesan error HTML dari Apps Script
+                    if (resultText.toLowerCase().includes("script function not found")) {
+                         throw new Error(`Fungsi doPost tidak ditemukan atau tidak di-deploy dengan benar di Google Apps Script.`);
+                    }
+                    throw new Error(`Respons dari server tidak valid (bukan JSON): ${resultText.substring(0, 200)}...`);
                 }
-
 
                 console.log('Respon dari Apps Script:', result);
                 if (result.status === "success" && result.transactionId) {
@@ -353,7 +482,6 @@
                 }
             } catch (error) {
                 console.error('Error saat mengirim pesanan ke Sheet:', error);
-                // Tampilkan pesan error yang lebih user-friendly
                 alert(`Terjadi kesalahan saat mencatat pesanan: ${error.message}`);
                 tombolProsesBayar.disabled = false;
                 tombolProsesBayar.textContent = "Lanjut ke Pembayaran";
@@ -368,46 +496,43 @@
             const kategoriText = kategoriAkunSelect.options[kategoriAkunSelect.selectedIndex].text;
             const jumlah = parseInt(jumlahAkunInput.value);
             const harga = (jumlah / ukuranBlok) * hargaPerBlok;
-            const generatedId = generateTransactionId(); // ID ini bisa digunakan jika Apps Script tidak mengembalikan ID
+            const generatedId = generateTransactionId();
 
             const pesanan = {
-                transactionId: generatedId, // Kirim ID yang digenerate client
+                transactionId: generatedId,
                 kategori: kategoriText,
                 jumlah: jumlah,
                 totalHarga: harga,
-                statusAwal: "Menunggu Pembayaran", // Status awal
-                timestampPesan: new Date().toISOString() // Timestamp ISO
+                statusAwal: "Menunggu Pembayaran",
+                timestampPesan: new Date().toISOString()
             };
 
-            // Kirim ke Apps Script
             const idTransaksiDariSheet = await kirimPesananKeSheet(pesanan);
 
-            if (idTransaksiDariSheet) { // Jika Apps Script mengembalikan ID (atau menggunakan ID yang dikirim client)
-                currentActiveTransactionId = idTransaksiDariSheet; // Gunakan ID dari sheet (atau yang dikirim jika sama)
-                
+            if (idTransaksiDariSheet) {
+                currentActiveTransactionId = idTransaksiDariSheet;
+
                 orderFormContainer.style.display = 'none';
-                paymentSection.style.display = 'block';
+                paymentSection.style.display = 'block'; // Tampilkan section pembayaran
 
                 nominalPembayaran.textContent = formatRupiah(harga);
-                qrisImage.src = STATIC_QRIS_IMAGE_URL; 
+                qrisImage.src = STATIC_QRIS_IMAGE_URL;
                 transactionInfo.innerHTML = `ID Transaksi Anda: <strong>${currentActiveTransactionId}</strong><br>Harap selesaikan pembayaran dan simpan ID ini. Status akan terupdate otomatis di bawah.`;
                 paymentStatusDisplay.textContent = 'Menunggu Pembayaran...';
                 paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
-                
+                refreshWarning.style.display = 'block'; // Tampilkan peringatan refresh
+
+                addBeforeUnloadListener(); // Tambahkan listener untuk mencegah refresh/close
                 mulaiMendengarkanStatusPembayaran(currentActiveTransactionId);
             }
-            // Jika idTransaksiDariSheet null, pesan error sudah ditampilkan oleh kirimPesananKeSheet
         });
 
         function mulaiMendengarkanStatusPembayaran(transactionId) {
-            // Hentikan listener lama jika ada
             if (activePaymentStatusRef) {
                 activePaymentStatusRef.off();
-                console.log(`Listener lama untuk ${currentActiveTransactionId} dihentikan.`);
             }
             console.log(`Memulai listener untuk status ID Transaksi: ${transactionId}`);
-            
-            // Path ke data transaksi di Firebase
+
             const path = `pembayaran/${transactionId}`;
             activePaymentStatusRef = database.ref(path);
 
@@ -418,38 +543,47 @@
                 console.log("Data status diterima dari Firebase:", data);
 
                 if (data && data.status) {
-                    // Normalisasi status untuk perbandingan yang lebih aman
                     if (data.status.trim().toLowerCase() === STATUS_BERHASIL_DARI_SHEET.trim().toLowerCase()) {
                         paymentStatusDisplay.textContent = 'Pembayaran Berhasil!';
                         paymentStatusDisplay.className = 'paymentStatusDisplay status-success';
-                        if(activePaymentStatusRef) activePaymentStatusRef.off(); // Hentikan listener setelah berhasil
+                        refreshWarning.style.display = 'none'; // Sembunyikan peringatan refresh
+                        removeBeforeUnloadListener(); // Hapus listener setelah pembayaran berhasil
+                        if(activePaymentStatusRef) activePaymentStatusRef.off();
                         console.log(`Pembayaran ${transactionId} berhasil. Listener dihentikan.`);
                     } else {
-                        // Tampilkan status apa adanya dari Firebase jika bukan "Lunas"
                         paymentStatusDisplay.textContent = `Status: ${data.status}`;
-                        // Beri kelas sesuai status jika ada yang spesifik, atau default pending
-                        // Ini bisa dikembangkan jika ada banyak kemungkinan status dari sheet
-                        paymentStatusDisplay.className = 'paymentStatusDisplay status-pending'; 
+                        paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
+                        refreshWarning.style.display = 'block'; // Pastikan tetap terlihat jika status belum berhasil
+                        addBeforeUnloadListener(); // Pastikan listener tetap ada
                     }
                 } else if (paymentStatusDisplay.textContent.includes("Menunggu Pembayaran")) {
-                    // Jika belum ada data di Firebase, dan status masih "Menunggu Pembayaran", biarkan saja.
-                    // Ini mencegah status berubah menjadi "tidak ditemukan" terlalu cepat.
-                }
-                 else {
-                    // Jika tidak ada data sama sekali atau tidak ada field status
+                    // Biarkan status "Menunggu Pembayaran"
+                    refreshWarning.style.display = 'block';
+                    addBeforeUnloadListener();
+                } else {
                     paymentStatusDisplay.textContent = 'Data transaksi tidak ditemukan/belum update.';
                     paymentStatusDisplay.className = 'paymentStatusDisplay status-notfound';
+                    refreshWarning.style.display = 'block'; // Tetap tampilkan warning jika data tidak ditemukan
+                    addBeforeUnloadListener();
                 }
             }, (error) => {
                 console.error("Error membaca status dari Firebase:", error);
                 paymentStatusDisplay.textContent = 'Gagal mengambil status dari Firebase.';
                 paymentStatusDisplay.className = 'paymentStatusDisplay status-error';
+                refreshWarning.style.display = 'block'; // Tetap tampilkan warning jika ada error
+                addBeforeUnloadListener();
             });
         }
-        
+
         jumlahAkunInput.addEventListener('input', perbaruiTotalHarga);
         window.onload = () => {
             perbaruiTotalHarga();
+            if (paymentSection.style.display === 'block') { // Jika payment section sudah terlihat saat load
+                 refreshWarning.style.display = 'block';
+                 addBeforeUnloadListener(); // Tambahkan listener jika halaman di-load ulang saat di payment section
+            } else {
+                 refreshWarning.style.display = 'none'; // Sembunyikan by default
+            }
         };
     </script>
 </body>
