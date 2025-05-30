@@ -18,5 +18,30 @@
 <body>
   <h2>Status Pembayaran</h2>
   <div id="status">⏳ Menunggu Pembayaran...</div>
+
+  <script>
+    async function fetchStatus() {
+      const apiURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'; // Ganti dengan URL Web App kamu
+      const targetID = '123'; // Ganti sesuai ID pembeli
+
+      try {
+        const response = await fetch(apiURL);
+        const data = await response.json();
+
+        const match = data.find(row => row.id == targetID);
+        if (match && match.status.toLowerCase() === 'sukses') {
+          document.getElementById('status').innerText = '✅ Pembayaran Berhasil!';
+        } else {
+          document.getElementById('status').innerText = '⏳ Menunggu Pembayaran...';
+        }
+      } catch (e) {
+        document.getElementById('status').innerText = '⚠️ Gagal mengambil data';
+        console.error(e);
+      }
+    }
+
+    fetchStatus();
+    setInterval(fetchStatus, 5000); // refresh otomatis setiap 5 detik
+  </script>
 </body>
 </html>
