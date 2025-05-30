@@ -57,7 +57,7 @@
             outline: 0;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
-        button {
+        button { /* Gaya umum untuk tombol */
             background-color: #007bff;
             color: white;
             padding: 14px 25px;
@@ -84,6 +84,14 @@
             transform: none;
             box-shadow: none;
         }
+        #tombolKembaliKeAwal { /* Tombol spesifik untuk kembali */
+            background-color: #28a745; /* Warna hijau, contoh */
+            margin-top: 25px; /* Margin atas lebih besar */
+        }
+        #tombolKembaliKeAwal:hover {
+            background-color: #218838; /* Hijau lebih gelap saat hover */
+        }
+
         #totalHargaDisplay { /* Hanya untuk harga di form */
             font-size: 1.3em;
             font-weight: bold;
@@ -103,51 +111,49 @@
 
         /* --- Styling untuk Payment Section --- */
         #paymentSection h2 {
-            color: #2c3e50; /* Mirip H1 */
-            font-size: 2em; /* Sedikit lebih besar dan tegas */
+            color: #2c3e50;
+            font-size: 2em;
             font-weight: 700;
             margin-bottom: 25px;
         }
         #paymentInstructions {
-            margin-top: 0; /* Dihapus karena H2 sudah punya margin bawah */
+            margin-top: 0;
             margin-bottom: 20px;
             font-size: 1.05em;
             color: #343a40;
             line-height: 1.7;
         }
         #paymentInstructions #nominalPembayaran {
-            color: #28a745; /* Hijau untuk nominal yang harus dibayar */
-            font-weight: 700; /* Lebih tebal */
+            color: #28a745;
+            font-weight: 700;
         }
         #qrisImage {
-            max-width: 280px; /* Ukuran QRIS dibuat lebih pasti, sesuaikan jika perlu */
-            width: 70%; /* Responsif */
+            max-width: 280px;
+            width: 70%;
             height: auto;
             margin-top: 10px;
-            margin-bottom: 25px; /* Ruang setelah QRIS */
-            border: 2px solid #e9ecef; /* Border lebih halus */
+            margin-bottom: 25px;
+            border: 2px solid #e9ecef;
             padding: 10px;
             border-radius: 12px;
             background-color: #fff;
             box-shadow: 0 6px 12px rgba(0,0,0,0.07);
         }
         #transactionInfo {
-            font-size: 1em; /* Ukuran font normal */
+            font-size: 1em;
             color: #495057;
             margin-top:0;
-            margin-bottom: 20px; /* Ruang sebelum warning */
+            margin-bottom: 20px;
             line-height: 1.6;
         }
         #transactionInfo strong {
-            color: #fd7e14; /* Oranye untuk ID Transaksi */
+            color: #fd7e14;
             font-weight: 600;
         }
-
-        /* --- Peringatan Jangan Refresh --- */
         #refreshWarning {
-            background-color: #fff3cd; /* Kuning muda untuk peringatan */
+            background-color: #fff3cd;
             border: 1px solid #ffeeba;
-            color: #856404; /* Warna teks untuk kontras dengan background kuning */
+            color: #856404;
             padding: 18px 22px;
             border-radius: 10px;
             margin-top: 10px;
@@ -155,29 +161,26 @@
             text-align: left;
             font-size: 0.95em;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            display: none; /* Sembunyikan secara default */
+            display: none;
         }
         #refreshWarning p {
             margin: 0;
             line-height: 1.5;
         }
-        #refreshWarning strong { /* Untuk penekanan kata */
+        #refreshWarning strong {
             font-weight: 600;
         }
-        /* Icon sederhana menggunakan CSS content (opsional) */
         #refreshWarning p::before {
-            content: "⚠️ "; /* Emoji peringatan */
+            content: "⚠️ ";
             margin-right: 8px;
             font-size: 1.1em;
         }
-
-
         #paymentStatusDisplay {
-            font-size: 1.4em; /* Lebih besar dan jelas */
+            font-size: 1.4em;
             font-weight: bold;
             padding: 22px;
-            margin-top: 0; /* Dihapus karena warning sudah punya margin bawah */
-            border-radius: 12px; /* Sudut lebih melengkung */
+            margin-top: 0;
+            border-radius: 12px;
             min-height: 60px;
             display: flex;
             justify-content: center;
@@ -185,124 +188,55 @@
             word-break: break-word;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-        /* Warna Status (sedikit disesuaikan untuk profesionalisme) */
-        .status-info { background-color: #cce5ff; color: #004085; border: 1px solid #b8daff; } /* Biru muda info */
-        .status-pending { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; } /* Kuning untuk pending */
-        .status-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; } /* Hijau untuk sukses */
-        .status-error, .status-notfound { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; } /* Merah untuk error */
+        .status-info { background-color: #cce5ff; color: #004085; border: 1px solid #b8daff; }
+        .status-pending { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .status-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status-error, .status-notfound { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
-        #paymentSection { display: none; } /* Awalnya disembunyikan */
+        #paymentSection { display: none; }
         #autoLastChecked { font-size: 0.88em; color: #868e96; margin-top: 20px; }
-
 
         /* --- PENYESUAIAN RESPONSIVE --- */
         @media (max-width: 600px) {
-            body {
-                font-size: 15px;
-                margin: 10px 0;
-            }
-            .container {
-                padding: 25px 20px;
-                width: 95%;
-                margin-bottom: 20px;
-                border-radius: 12px;
-            }
-            h1 {
-                font-size: 1.6em;
-                margin-bottom: 25px;
-            }
-             #paymentSection h2 {
-                font-size: 1.7em;
-            }
-            label {
-                font-size: 0.95em;
-            }
-            input[type="text"], input[type="number"], select {
-                padding: 12px;
-                font-size: 0.95em;
-                margin-bottom: 18px;
-                border-radius: 6px;
-            }
-            button {
-                padding: 12px 20px;
-                font-size: 1em;
-                border-radius: 6px;
-            }
-            #totalHargaDisplay {
-                font-size: 1.2em;
-                padding: 18px;
-                min-height: 45px;
-                border-radius: 8px;
-            }
-             #paymentStatusDisplay {
-                font-size: 1.25em;
-                padding: 20px;
-                border-radius: 10px;
-            }
-            #paymentInstructions {
-                font-size: 0.95em;
-            }
-            #qrisImage {
-                max-width: 220px;
-                padding: 8px;
-                border-radius: 10px;
-            }
-            #transactionInfo {
-                font-size: 0.9em;
-            }
-            #refreshWarning {
-                padding: 15px;
-                font-size: 0.9em;
-            }
-            #refreshWarning p::before {
-                font-size: 1em;
-            }
+            body { font-size: 15px; margin: 10px 0; }
+            .container { padding: 25px 20px; width: 95%; margin-bottom: 20px; border-radius: 12px; }
+            h1 { font-size: 1.6em; margin-bottom: 25px; }
+            #paymentSection h2 { font-size: 1.7em; }
+            label { font-size: 0.95em; }
+            input[type="text"], input[type="number"], select { padding: 12px; font-size: 0.95em; margin-bottom: 18px; border-radius: 6px; }
+            button { padding: 12px 20px; font-size: 1em; border-radius: 6px; }
+            #totalHargaDisplay { font-size: 1.2em; padding: 18px; min-height: 45px; border-radius: 8px; }
+            #paymentStatusDisplay { font-size: 1.25em; padding: 20px; border-radius: 10px; }
+            #paymentInstructions { font-size: 0.95em; }
+            #qrisImage { max-width: 220px; padding: 8px; border-radius: 10px; }
+            #transactionInfo { font-size: 0.9em; }
+            #refreshWarning { padding: 15px; font-size: 0.9em; }
+            #refreshWarning p::before { font-size: 1em; }
         }
-
         @media (max-width: 400px) {
-            .container {
-                padding: 20px 15px;
-            }
-             h1 {
-                font-size: 1.4em;
-            }
-            #paymentSection h2 {
-                font-size: 1.5em;
-            }
-            #totalHargaDisplay, #paymentStatusDisplay {
-                font-size: 1.1em;
-                padding: 15px;
-            }
-            #paymentInstructions {
-                font-size: 0.9em;
-            }
-            #qrisImage {
-                max-width: 180px;
-            }
-             #refreshWarning {
-                font-size: 0.85em;
-                padding: 12px;
-            }
+            .container { padding: 20px 15px; }
+            h1 { font-size: 1.4em; }
+            #paymentSection h2 { font-size: 1.5em; }
+            #totalHargaDisplay, #paymentStatusDisplay { font-size: 1.1em; padding: 15px; }
+            #paymentInstructions { font-size: 0.9em; }
+            #qrisImage { max-width: 180px; }
+            #refreshWarning { font-size: 0.85em; padding: 12px; }
         }
     </style>
 </head>
 <body>
     <div class="container" id="orderFormContainer">
         <h1>📝 Form Pemesanan Akun</h1>
-
         <label for="kategoriAkun">1. Kategori Akun:</label>
         <select id="kategoriAkun">
             <option value="300_followers">300 Followers</option>
             <option value="1000_followers">1000 Followers</option>
         </select>
-
         <label for="jumlahAkun">2. Jumlah Akun (Minimal 3, Kelipatan 3):</label>
         <input type="number" id="jumlahAkun" placeholder="Contoh: 3, 6, atau 9" min="3" step="3">
         <div id="jumlahAkunError" class="error-message"></div>
-
         <label for="totalHargaDisplay">3. Total Harga:</label>
         <div id="totalHargaDisplay">Rp 0</div>
-
         <button id="tombolProsesBayar" disabled>Lanjut ke Pembayaran</button>
     </div>
 
@@ -311,22 +245,19 @@
         <p id="paymentInstructions">Silakan scan kode QRIS di bawah ini dan lakukan pembayaran sebesar <strong id="nominalPembayaran">Rp 0</strong>.</p>
         <img id="qrisImage" src="https_placeholder_qris.png" alt="Scan QRIS untuk Pembayaran">
         <div id="transactionInfo"></div>
-
         <div id="refreshWarning">
             <p><strong>PERHATIAN:</strong> Untuk kelancaran proses, mohon untuk <strong>tidak me-refresh</strong> halaman ini hingga status pembayaran Anda berubah menjadi "Pembayaran Berhasil".</p>
         </div>
-
         <div id="paymentStatusDisplay" class="status-info">Menunggu Pembayaran...</div>
+        <button id="tombolKembaliKeAwal" style="display: none;">Buat Pesanan Baru</button>
         <p id="autoLastChecked"></p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-
     <script>
-        // Konfigurasi Firebase Anda
         const firebaseConfig = {
-          apiKey: "AIzaSyDA_T-LRjANUHG1ZLqKG1vwD_Wu9hpzWz4", // HATI-HATI: API Key terlihat publik. Untuk produksi, pertimbangkan keamanan Firebase Rules.
+          apiKey: "AIzaSyDA_T-LRjANUHG1ZLqKG1vwD_Wu9hpzWz4",
           authDomain: "statuspembayaran-b7a1f.firebaseapp.com",
           databaseURL: "https://statuspembayaran-b7a1f-default-rtdb.asia-southeast1.firebasedatabase.app",
           projectId: "statuspembayaran-b7a1f",
@@ -335,7 +266,6 @@
           appId: "1:619692483603:web:b6c37409717b8ca89bcbe6",
           measurementId: "G-28H2HJGVTC"
         };
-
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
@@ -346,7 +276,6 @@
         const totalHargaDisplay = document.getElementById('totalHargaDisplay');
         const jumlahAkunError = document.getElementById('jumlahAkunError');
         const tombolProsesBayar = document.getElementById('tombolProsesBayar');
-
         const orderFormContainer = document.getElementById('orderFormContainer');
         const paymentSection = document.getElementById('paymentSection');
         const paymentInstructions = document.getElementById('paymentInstructions');
@@ -356,9 +285,9 @@
         const paymentStatusDisplay = document.getElementById('paymentStatusDisplay');
         const autoLastChecked = document.getElementById('autoLastChecked');
         const refreshWarning = document.getElementById('refreshWarning');
+        const tombolKembaliKeAwal = document.getElementById('tombolKembaliKeAwal'); // Tombol baru
 
         const STATIC_QRIS_IMAGE_URL = "https://raw.githubusercontent.com/rasyaacc/Payment-Rasya/2cfca336c23a0350065fbdd9e69ad0eceacf6528/Qris-SP.jpeg";
-
         const hargaPerBlok = 100000;
         const ukuranBlok = 3;
         const STATUS_BERHASIL_DARI_SHEET = "Lunas";
@@ -369,60 +298,47 @@
 
         function handleBeforeUnload(event) {
             event.preventDefault();
-            event.returnValue = ''; // Diperlukan untuk beberapa browser (Chrome)
-            // Pesan ini mungkin tidak ditampilkan oleh browser modern, mereka akan menampilkan pesan default.
+            event.returnValue = '';
             return 'Apakah Anda yakin ingin meninggalkan halaman ini? Proses pembayaran mungkin belum selesai.';
         }
-
         function addBeforeUnloadListener() {
             if (!beforeUnloadListenerAdded) {
                 window.addEventListener('beforeunload', handleBeforeUnload);
                 beforeUnloadListenerAdded = true;
-                console.log("BeforeUnload listener ditambahkan.");
             }
         }
-
         function removeBeforeUnloadListener() {
             if (beforeUnloadListenerAdded) {
                 window.removeEventListener('beforeunload', handleBeforeUnload);
                 beforeUnloadListenerAdded = false;
-                console.log("BeforeUnload listener dihapus.");
             }
         }
-
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
         }
-
         function perbaruiTotalHarga() {
             const jumlah = parseInt(jumlahAkunInput.value);
             jumlahAkunError.textContent = '';
             tombolProsesBayar.disabled = true;
-
             if (isNaN(jumlah) && jumlahAkunInput.value !== "") {
                 jumlahAkunError.textContent = 'Masukkan angka yang valid.';
-                totalHargaDisplay.textContent = formatRupiah(0);
-                return;
+                totalHargaDisplay.textContent = formatRupiah(0); return;
             }
             if (jumlahAkunInput.value === "" || isNaN(jumlah)) {
-                totalHargaDisplay.textContent = formatRupiah(0);
-                return;
+                totalHargaDisplay.textContent = formatRupiah(0); return;
             }
             if (jumlah < ukuranBlok) {
                 jumlahAkunError.textContent = `Jumlah minimal adalah ${ukuranBlok} akun.`;
-                totalHargaDisplay.textContent = formatRupiah(0);
-                return;
+                totalHargaDisplay.textContent = formatRupiah(0); return;
             }
             if (jumlah % ukuranBlok !== 0) {
                 jumlahAkunError.textContent = `Jumlah harus dalam kelipatan ${ukuranBlok}.`;
-                totalHargaDisplay.textContent = formatRupiah(0);
-                return;
+                totalHargaDisplay.textContent = formatRupiah(0); return;
             }
             const totalHarga = (jumlah / ukuranBlok) * hargaPerBlok;
             totalHargaDisplay.textContent = formatRupiah(totalHarga);
             tombolProsesBayar.disabled = false;
         }
-
         function generateTransactionId() {
             const d = new Date();
             const year = d.getFullYear();
@@ -434,158 +350,105 @@
             const random = Math.random().toString(36).substring(2, 6).toUpperCase();
             return `TRX${year}${month}${day}-${hours}${minutes}${seconds}-${random}`;
         }
-
         async function kirimPesananKeSheet(payload) {
             tombolProsesBayar.disabled = true;
             tombolProsesBayar.textContent = "Memproses...";
             try {
                 const response = await fetch(APPS_SCRIPT_WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'cors',
-                    cache: 'no-cache',
-                    headers: {
-                         'Content-Type': 'text/plain;charset=UTF-8',
-                    },
-                    body: JSON.stringify(payload),
-                    redirect: 'follow'
+                    method: 'POST', mode: 'cors', cache: 'no-cache',
+                    headers: { 'Content-Type': 'text/plain;charset=UTF-8', },
+                    body: JSON.stringify(payload), redirect: 'follow'
                 });
-
                 tombolProsesBayar.disabled = false;
                 tombolProsesBayar.textContent = "Lanjut ke Pembayaran";
-
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error('Network response was not ok.', response.status, errorText);
-                    throw new Error(`Gagal menghubungi server Apps Script: ${response.status} ${response.statusText}. Detail: ${errorText}`);
+                    throw new Error(`Gagal server Apps Script: ${response.status} ${response.statusText}. Detail: ${errorText}`);
                 }
-
                 const resultText = await response.text();
-                console.log('Teks mentah dari Apps Script:', resultText);
                 let result;
-                try {
-                    result = JSON.parse(resultText);
-                } catch (e) {
-                    console.error("Gagal mem-parse respons Apps Script sebagai JSON:", resultText);
+                try { result = JSON.parse(resultText); } catch (e) {
                     if (resultText.toLowerCase().includes("script function not found")) {
-                         throw new Error(`Fungsi doPost tidak ditemukan atau tidak di-deploy dengan benar di Google Apps Script.`);
+                         throw new Error(`Fungsi doPost tidak ditemukan/salah di Google Apps Script.`);
                     }
-                    throw new Error(`Respons dari server tidak valid (bukan JSON): ${resultText.substring(0, 200)}...`);
+                    throw new Error(`Respons server tidak valid (bukan JSON): ${resultText.substring(0, 200)}...`);
                 }
-
-                console.log('Respon dari Apps Script:', result);
-                if (result.status === "success" && result.transactionId) {
-                    return result.transactionId;
-                } else {
-                    throw new Error(result.message || 'Gagal membuat transaksi di sheet.');
-                }
+                if (result.status === "success" && result.transactionId) return result.transactionId;
+                else throw new Error(result.message || 'Gagal membuat transaksi di sheet.');
             } catch (error) {
-                console.error('Error saat mengirim pesanan ke Sheet:', error);
-                alert(`Terjadi kesalahan saat mencatat pesanan: ${error.message}`);
+                alert(`Kesalahan catat pesanan: ${error.message}`);
                 tombolProsesBayar.disabled = false;
                 tombolProsesBayar.textContent = "Lanjut ke Pembayaran";
                 return null;
             }
         }
-
         function kembaliKeHalamanAwal() {
             paymentSection.style.display = 'none';
             refreshWarning.style.display = 'none';
+            tombolKembaliKeAwal.style.display = 'none'; // Sembunyikan tombol kembali
 
             orderFormContainer.style.display = 'block';
-
             if (kategoriAkunSelect.options.length > 0) {
                 kategoriAkunSelect.value = kategoriAkunSelect.options[0].value;
             }
             jumlahAkunInput.value = '';
-
             perbaruiTotalHarga();
-
             currentActiveTransactionId = null;
             if (activePaymentStatusRef) {
                 activePaymentStatusRef.off();
                 activePaymentStatusRef = null;
             }
-            removeBeforeUnloadListener();
-
+            removeBeforeUnloadListener(); // Pastikan ini juga dipanggil
             console.log("Dikembalikan ke halaman awal (form pemesanan).");
         }
 
         tombolProsesBayar.addEventListener('click', async function() {
             if (tombolProsesBayar.disabled) return;
-
-            const kategoriValue = kategoriAkunSelect.value;
             const kategoriText = kategoriAkunSelect.options[kategoriAkunSelect.selectedIndex].text;
             const jumlah = parseInt(jumlahAkunInput.value);
             const harga = (jumlah / ukuranBlok) * hargaPerBlok;
             const generatedId = generateTransactionId();
-
             const pesanan = {
-                transactionId: generatedId,
-                kategori: kategoriText,
-                jumlah: jumlah,
-                totalHarga: harga,
-                statusAwal: "Menunggu Pembayaran",
-                timestampPesan: new Date().toISOString()
+                transactionId: generatedId, kategori: kategoriText, jumlah: jumlah,
+                totalHarga: harga, statusAwal: "Menunggu Pembayaran", timestampPesan: new Date().toISOString()
             };
-
             const idTransaksiDariSheet = await kirimPesananKeSheet(pesanan);
-
             if (idTransaksiDariSheet) {
                 currentActiveTransactionId = idTransaksiDariSheet;
-
                 orderFormContainer.style.display = 'none';
                 paymentSection.style.display = 'block';
-
                 nominalPembayaran.textContent = formatRupiah(harga);
                 qrisImage.src = STATIC_QRIS_IMAGE_URL;
-                transactionInfo.innerHTML = `ID Transaksi Anda: <strong>${currentActiveTransactionId}</strong><br>Harap selesaikan pembayaran dan simpan ID ini. Status akan terupdate otomatis di bawah.`;
+                transactionInfo.innerHTML = `ID Transaksi: <strong>${currentActiveTransactionId}</strong><br>Selesaikan pembayaran & simpan ID. Status update otomatis.`;
                 paymentStatusDisplay.textContent = 'Menunggu Pembayaran...';
                 paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
                 refreshWarning.style.display = 'block';
-
+                tombolKembaliKeAwal.style.display = 'none'; // Pastikan tombol kembali disembunyikan awalnya
                 addBeforeUnloadListener();
                 mulaiMendengarkanStatusPembayaran(currentActiveTransactionId);
             }
         });
 
         function mulaiMendengarkanStatusPembayaran(transactionId) {
-            if (activePaymentStatusRef) {
-                activePaymentStatusRef.off(); // Hentikan listener lama jika ada
-            }
-            console.log(`Memulai listener untuk status ID Transaksi: ${transactionId}`);
-
+            if (activePaymentStatusRef) activePaymentStatusRef.off();
             const path = `pembayaran/${transactionId}`;
             activePaymentStatusRef = database.ref(path);
-
             activePaymentStatusRef.on('value', (snapshot) => {
                 const data = snapshot.val();
-                const timestamp = new Date();
-                autoLastChecked.textContent = 'Status dicek: ' + timestamp.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                console.log("Data status diterima dari Firebase:", data);
-
+                autoLastChecked.textContent = 'Status dicek: ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 if (!currentActiveTransactionId || transactionId !== currentActiveTransactionId) {
-                     // Jika listener ini bukan untuk transaksi aktif saat ini, hentikan.
-                    if (activePaymentStatusRef) activePaymentStatusRef.off();
-                    return;
+                    if (activePaymentStatusRef) activePaymentStatusRef.off(); return;
                 }
-
                 if (data && data.status) {
                     if (data.status.trim().toLowerCase() === STATUS_BERHASIL_DARI_SHEET.trim().toLowerCase()) {
                         paymentStatusDisplay.textContent = 'Pembayaran Berhasil!';
                         paymentStatusDisplay.className = 'paymentStatusDisplay status-success';
-                        
-                        if(activePaymentStatusRef) activePaymentStatusRef.off(); // Hentikan listener ini
-                        activePaymentStatusRef = null; // Tandai sudah tidak aktif
-                        console.log(`Pembayaran ${transactionId} berhasil. Listener spesifik ini dihentikan.`);
-
-                        alert('Pembayaran berhasil! Anda akan dikembalikan ke halaman pemesanan.');
-                        setTimeout(() => {
-                            // Pastikan hanya kembali jika ini adalah transaksi yang sedang aktif
-                            if (transactionId === currentActiveTransactionId) {
-                                kembaliKeHalamanAwal();
-                            }
-                        }, 500);
-
+                        refreshWarning.style.display = 'none';
+                        removeBeforeUnloadListener();
+                        if(activePaymentStatusRef) activePaymentStatusRef.off();
+                        activePaymentStatusRef = null;
+                        tombolKembaliKeAwal.style.display = 'inline-block'; // Tampilkan tombol kembali
+                        alert('Pembayaran berhasil!');
                     } else {
                         paymentStatusDisplay.textContent = `Status: ${data.status}`;
                         paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
@@ -593,39 +456,34 @@
                         addBeforeUnloadListener();
                     }
                 } else if (paymentStatusDisplay.textContent.includes("Menunggu Pembayaran")) {
-                    refreshWarning.style.display = 'block';
-                    addBeforeUnloadListener();
-                } else if (orderFormContainer.style.display === 'none') { // Hanya update jika masih di halaman pembayaran
+                    refreshWarning.style.display = 'block'; addBeforeUnloadListener();
+                } else if (orderFormContainer.style.display === 'none') {
                     paymentStatusDisplay.textContent = 'Data transaksi tidak ditemukan/belum update.';
                     paymentStatusDisplay.className = 'paymentStatusDisplay status-notfound';
-                    refreshWarning.style.display = 'block';
-                    addBeforeUnloadListener();
+                    refreshWarning.style.display = 'block'; addBeforeUnloadListener();
                 }
             }, (error) => {
-                console.error("Error membaca status dari Firebase:", error);
-                if (orderFormContainer.style.display === 'none') { // Hanya update jika masih di halaman pembayaran
+                if (orderFormContainer.style.display === 'none') {
                     paymentStatusDisplay.textContent = 'Gagal mengambil status dari Firebase.';
                     paymentStatusDisplay.className = 'paymentStatusDisplay status-error';
-                    refreshWarning.style.display = 'block';
-                    addBeforeUnloadListener();
+                    refreshWarning.style.display = 'block'; addBeforeUnloadListener();
                 }
             });
         }
 
         jumlahAkunInput.addEventListener('input', perbaruiTotalHarga);
+        tombolKembaliKeAwal.addEventListener('click', kembaliKeHalamanAwal); // Event listener untuk tombol baru
+
         window.onload = () => {
             perbaruiTotalHarga();
-            // Cek apakah URL mengandung parameter yang menandakan kembali dari pembayaran (jika ada redirect full page)
-            // Untuk SPA seperti ini, lebih baik cek state elemen
             if (paymentSection.style.display === 'block') {
                  refreshWarning.style.display = 'block';
-                 // Jika ada currentActiveTransactionId (misal dari session/local storage jika halaman refresh), mulai listener lagi
-                 // Namun untuk kasus ini, state JavaScript akan hilang saat refresh, jadi asumsi currentActiveTransactionId null
-                 // Jika ingin persisten antar refresh, currentActiveTransactionId perlu disimpan.
-                 // Untuk sekarang, jika halaman di-refresh saat di paymentSection, listener beforeunload akan aktif.
                  addBeforeUnloadListener();
+                 // Jika status sudah berhasil dari load sebelumnya (misal menggunakan local storage), tampilkan tombol kembali
+                 // Untuk saat ini, tombol kembali hanya muncul via Firebase listener
             } else {
                  refreshWarning.style.display = 'none';
+                 tombolKembaliKeAwal.style.display = 'none';
             }
         };
     </script>
