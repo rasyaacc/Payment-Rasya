@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> {/* Viewport sudah ada, ini bagus! */}
     <title>Pemesanan & Status Pembayaran Otomatis</title>
     <style>
         body {
@@ -14,6 +14,7 @@
             margin: 20px 0;
             background-color: #f4f7f9;
             color: #333;
+            font-size: 16px; /* Ukuran font dasar */
         }
         .container {
             background-color: #ffffff;
@@ -36,6 +37,7 @@
             font-weight: 600;
             color: #555;
             text-align: left;
+            font-size: 1em;
         }
         input[type="text"], input[type="number"], select {
             width: calc(100% - 24px);
@@ -66,12 +68,12 @@
             cursor: not-allowed;
         }
         #totalHargaDisplay, #paymentStatusDisplay {
-            font-size: 1.5em;
+            font-size: 1.4em; /* Sedikit disesuaikan */
             font-weight: bold;
-            padding: 20px;
+            padding: 18px; /* Sedikit disesuaikan */
             margin-top: 15px;
             border-radius: 8px;
-            min-height: 60px;
+            min-height: 50px; /* Sedikit disesuaikan */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -85,11 +87,70 @@
         .status-error, .status-notfound { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
         .status-info { background-color: #cff4fc; color: #055160; border: 1px solid #b6effb; }
         
-        #paymentInstructions { margin-top: 20px; font-size: 1.1em; color: #333; }
-        #qrisImage { max-width: 80%; height: auto; margin-top: 15px; border: 1px solid #ddd; padding: 5px; }
+        #paymentInstructions { margin-top: 20px; font-size: 1em; color: #333; line-height: 1.5; }
+        #qrisImage { max-width: 70%; height: auto; margin-top: 15px; border: 1px solid #ddd; padding: 5px; }
         #transactionInfo { font-size: 0.9em; color: #555; margin-top:10px; }
 
         #paymentSection { display: none; }
+        #autoLastChecked { font-size: 0.8em; color: #777; margin-top: 15px; }
+
+        /* --- PENYESUAIAN RESPONSIVE --- */
+        @media (max-width: 600px) { /* Breakpoint untuk layar kecil, misal ponsel */
+            body {
+                font-size: 15px; /* Sedikit perkecil font dasar untuk layar kecil */
+                margin: 10px 0; /* Kurangi margin atas bawah body */
+            }
+            .container {
+                padding: 20px; /* Kurangi padding container */
+                width: 95%; /* Lebar container sedikit lebih besar */
+                margin-bottom: 20px;
+            }
+            h1, h2 {
+                font-size: 1.5em; /* Perkecil ukuran heading */
+                margin-bottom: 20px;
+            }
+            label {
+                font-size: 0.95em; /* Perkecil sedikit font label */
+            }
+            input[type="text"], input[type="number"], select {
+                padding: 10px; /* Kurangi padding input */
+                font-size: 0.95em;
+                margin-bottom: 15px;
+            }
+            button {
+                padding: 10px 18px; /* Kurangi padding tombol */
+                font-size: 0.95em;
+            }
+            #totalHargaDisplay, #paymentStatusDisplay {
+                font-size: 1.2em; /* Perkecil font status */
+                padding: 15px;
+                min-height: 40px;
+            }
+            #paymentInstructions {
+                font-size: 0.9em; /* Perkecil font instruksi */
+            }
+            #qrisImage {
+                max-width: 80%; /* Biarkan QRIS tetap cukup besar */
+            }
+            #transactionInfo {
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 400px) { /* Breakpoint untuk layar sangat kecil */
+            .container {
+                padding: 15px;
+            }
+             h1, h2 {
+                font-size: 1.3em;
+            }
+            #totalHargaDisplay, #paymentStatusDisplay {
+                font-size: 1.1em;
+            }
+            #paymentInstructions {
+                font-size: 0.85em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -118,7 +179,7 @@
         <img id="qrisImage" src="https_placeholder_qris.png" alt="Scan QRIS untuk Pembayaran"> 
         <div id="transactionInfo"></div>
         <div id="paymentStatusDisplay" class="status-info">Menunggu Pembayaran...</div>
-        <p id="autoLastChecked" style="font-size: 0.8em; color: #777; margin-top: 15px;"></p>
+        <p id="autoLastChecked"></p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -140,7 +201,7 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // URL Google Apps Script Web App Anda (SUDAH DIUPDATE DENGAN URL ANDA)
+        // URL Google Apps Script Web App Anda
         const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxI2Ma8oK6s039PZyS0cIAY5T-70eo9Jp0PofnhBBCtN5SXrfjEeX9_chOeWx_feihmdw/exec';
 
         const kategoriAkunSelect = document.getElementById('kategoriAkun');
@@ -158,9 +219,10 @@
         const paymentStatusDisplay = document.getElementById('paymentStatusDisplay');
         const autoLastChecked = document.getElementById('autoLastChecked');
         
-        // PENTING: GANTI DENGAN URL GAMBAR QRIS STATIS ANDA YANG VALID
+        // GANTI DENGAN URL GAMBAR QRIS STATIS ANDA YANG VALID
         const STATIC_QRIS_IMAGE_URL = "https_placeholder_qris.png"; // Contoh: "https://via.placeholder.com/250x250.png?text=Scan+QRIS+Anda"
         // Jika Anda punya URL gambar QRIS, ganti placeholder di atas.
+        // qrisImage.src = STATIC_QRIS_IMAGE_URL; // Akan di-set saat tombol bayar diklik
 
         const hargaPerBlok = 100000;
         const ukuranBlok = 3;
@@ -178,12 +240,12 @@
             jumlahAkunError.textContent = '';
             tombolProsesBayar.disabled = true;
 
-            if (isNaN(jumlah) && jumlahAkunInput.value !== "") { // Hanya error jika ada input tapi bukan angka
+            if (isNaN(jumlah) && jumlahAkunInput.value !== "") {
                 jumlahAkunError.textContent = 'Masukkan angka yang valid.';
                 totalHargaDisplay.textContent = formatRupiah(0);
                 return;
             }
-            if (jumlahAkunInput.value === "" || isNaN(jumlah)) { // Jika kosong atau belum valid, harga 0
+            if (jumlahAkunInput.value === "" || isNaN(jumlah)) {
                 totalHargaDisplay.textContent = formatRupiah(0);
                 return;
             }
@@ -211,46 +273,34 @@
             const minutes = ('0' + d.getMinutes()).slice(-2);
             const seconds = ('0' + d.getSeconds()).slice(-2);
             const random = Math.random().toString(36).substring(2, 6).toUpperCase();
-            return `TRX${year}${month}${day}-${hours}${minutes}${seconds}-${random}`; // Menambahkan prefix TRX
+            return `TRX${year}${month}${day}-${hours}${minutes}${seconds}-${random}`;
         }
 
         async function kirimPesananKeSheet(payload) {
             tombolProsesBayar.disabled = true;
             tombolProsesBayar.textContent = "Memproses...";
             try {
-                // Untuk Apps Script Web App yang di-deploy sebagai "Anyone" dan mengembalikan JSON,
-                // kita tidak perlu 'mode: cors' atau 'redirect: follow' secara eksplisit jika tidak ada masalah.
-                // Header Content-Type harus 'text/plain' jika Apps Script membaca e.postData.contents sebagai string.
-                // Jika Apps Script `JSON.parse(e.postData.contents)`, maka 'application/json' di sini BUKAN cara yang tepat
-                // untuk mengirim via `fetch` ke Apps Script jika Apps Script mengharapkan `e.postData.contents` sebagai string JSON.
-                // Cara paling umum adalah mengirim sebagai `text/plain` dan Apps Script mem-parse-nya.
-                // Atau, jika mengirim sebagai `application/x-www-form-urlencoded`, Apps Script bisa membacanya dari `e.parameter`.
-                // Kita sudah set Apps Script `doPost` untuk `JSON.parse(e.postData.contents)`.
-                // `fetch` akan mengirim `Content-Type: text/plain;charset=UTF-8` secara default untuk string body.
-
                 const response = await fetch(APPS_SCRIPT_WEB_APP_URL, {
                     method: 'POST',
                     cache: 'no-cache',
                     headers: {
-                        // 'Content-Type': 'application/json' // Jika mengirim JSON dan Apps Script diatur untuk menerimanya langsung (lebih kompleks untuk doPost standar)
-                        // Untuk e.postData.contents, biarkan fetch mengirim content-type default (text/plain) atau set eksplisit
-                         'Content-Type': 'text/plain;charset=UTF-8', // Eksplisit lebih baik
+                         'Content-Type': 'text/plain;charset=UTF-8',
                     },
                     body: JSON.stringify(payload)
                 });
                 
-                tombolProsesBayar.disabled = false; // Aktifkan kembali tombol setelah selesai
+                tombolProsesBayar.disabled = false;
                 tombolProsesBayar.textContent = "Lanjut ke Pembayaran";
 
                 if (!response.ok) {
-                    const errorText = await response.text(); // Coba dapatkan detail error dari Apps Script
+                    const errorText = await response.text();
                     console.error('Network response was not ok.', response.status, errorText);
                     throw new Error(`Gagal menghubungi server Apps Script: ${response.status} ${response.statusText}. Detail: ${errorText}`);
                 }
                 
-                const resultText = await response.text(); // Dapatkan respons sebagai teks dulu
+                const resultText = await response.text();
                 console.log('Teks mentah dari Apps Script:', resultText);
-                const result = JSON.parse(resultText); // Kemudian parse sebagai JSON
+                const result = JSON.parse(resultText);
 
                 console.log('Respon dari Apps Script:', result);
                 if (result.status === "success" && result.transactionId) {
@@ -278,7 +328,7 @@
 
             const pesanan = {
                 transactionId: generatedId,
-                kategori: kategoriText, // Kirim teks kategori
+                kategori: kategoriText,
                 jumlah: jumlah,
                 totalHarga: harga,
                 statusAwal: "Menunggu Pembayaran",
@@ -294,7 +344,7 @@
                 paymentSection.style.display = 'block';
 
                 nominalPembayaran.textContent = formatRupiah(harga);
-                qrisImage.src = STATIC_QRIS_IMAGE_URL;
+                qrisImage.src = STATIC_QRIS_IMAGE_URL; // Set URL gambar QRIS Anda
                 transactionInfo.innerHTML = `ID Transaksi Anda: <strong>${currentActiveTransactionId}</strong><br>Harap selesaikan pembayaran dan simpan ID ini. Status akan terupdate otomatis di bawah.`;
                 paymentStatusDisplay.textContent = 'Menunggu Pembayaran...';
                 paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
@@ -318,7 +368,7 @@
                 autoLastChecked.textContent = 'Status dicek: ' + timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 console.log("Data status diterima dari Firebase:", data);
 
-                if (data && data.status) { // Pastikan data dan data.status ada
+                if (data && data.status) {
                     if (data.status.trim().toLowerCase() === STATUS_BERHASIL_DARI_SHEET.trim().toLowerCase()) {
                         paymentStatusDisplay.textContent = 'Pembayaran Berhasil!';
                         paymentStatusDisplay.className = 'paymentStatusDisplay status-success';
@@ -330,10 +380,7 @@
                     }
                 } else if (paymentStatusDisplay.textContent.includes("Menunggu Pembayaran")) {
                     // Biarkan status "Menunggu Pembayaran" jika belum ada data di Firebase
-                    // atau data.status belum terdefinisi, karena data baru akan muncul 
-                    // setelah admin update sheet dan onEdit trigger.
                 } else {
-                    // Jika sebelumnya bukan "Menunggu Pembayaran" dan data jadi null/kosong
                     paymentStatusDisplay.textContent = 'Data transaksi tidak ditemukan/belum update.';
                     paymentStatusDisplay.className = 'paymentStatusDisplay status-notfound';
                 }
@@ -347,6 +394,9 @@
         jumlahAkunInput.addEventListener('input', perbaruiTotalHarga);
         window.onload = () => {
             perbaruiTotalHarga();
+             // Jika Anda ingin gambar QRIS ditampilkan dari awal (mungkin dengan placeholder atau jika URL sudah valid)
+            // Anda bisa set di sini:
+            // qrisImage.src = STATIC_QRIS_IMAGE_URL; 
         };
     </script>
 </body>
