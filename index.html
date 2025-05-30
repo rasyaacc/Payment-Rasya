@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pemesanan & Status Pembayaran</title>
+    <title>Pemesanan & Status Pembayaran Otomatis</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
             display: flex;
-            flex-direction: column; /* Mengubah flex direction agar bisa ada 2 section */
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            margin: 20px 0; /* Memberi sedikit margin atas bawah */
+            margin: 20px 0;
             background-color: #f4f7f9;
             color: #333;
         }
@@ -22,8 +22,8 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 90%;
-            max-width: 500px; /* Sedikit lebih lebar untuk form */
-            margin-bottom: 30px; /* Jarak antar container */
+            max-width: 500px;
+            margin-bottom: 30px;
         }
         h1, h2 {
             color: #2c3e50;
@@ -38,7 +38,7 @@
             text-align: left;
         }
         input[type="text"], input[type="number"], select {
-            width: calc(100% - 24px); /* Mempertimbangkan padding dan border */
+            width: calc(100% - 24px);
             padding: 12px;
             margin-bottom: 20px;
             border: 1px solid #ddd;
@@ -65,7 +65,7 @@
             background-color: #bdc3c7;
             cursor: not-allowed;
         }
-        #totalHargaDisplay, #paymentStatus {
+        #totalHargaDisplay, #paymentStatusDisplay {
             font-size: 1.5em;
             font-weight: bold;
             padding: 20px;
@@ -77,31 +77,19 @@
             align-items: center;
             word-break: break-word;
         }
-        .harga-display {
-            background-color: #e9ecef;
-            color: #007bff;
-            border: 1px solid #ced4da;
-        }
-        .error-message {
-            color: #dc3545;
-            font-size: 0.9em;
-            text-align: left;
-            margin-top: -15px;
-            margin-bottom: 10px;
-        }
-        /* Kelas status pembayaran yang sudah ada */
+        .harga-display { background-color: #e9ecef; color: #007bff; border: 1px solid #ced4da; }
+        .error-message { color: #dc3545; font-size: 0.9em; text-align: left; margin-top: -15px; margin-bottom: 10px; }
+        
         .status-pending { background-color: #fef3cd; color: #664d03; border: 1px solid #ffeeba; }
         .status-success { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
         .status-error, .status-notfound { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
         .status-info { background-color: #cff4fc; color: #055160; border: 1px solid #b6effb; }
         
-        hr {
-            border: 0;
-            height: 1px;
-            background: #ddd;
-            margin: 40px 0;
-        }
-        #lastChecked { font-size: 0.8em; color: #777; margin-top: 15px; }
+        #paymentInstructions { margin-top: 20px; font-size: 1.1em; color: #333; }
+        #qrisImage { max-width: 80%; height: auto; margin-top: 15px; border: 1px solid #ddd; padding: 5px; }
+        #transactionInfo { font-size: 0.9em; color: #555; margin-top:10px; }
+
+        #paymentSection { display: none; }
     </style>
 </head>
 <body>
@@ -110,37 +98,34 @@
         
         <label for="kategoriAkun">1. Kategori Akun:</label>
         <select id="kategoriAkun">
-            <option value="300">300 Followers</option>
-            <option value="1000">1000 Followers</option>
+            <option value="300_followers">300 Followers</option>
+            <option value="1000_followers">1000 Followers</option>
         </select>
 
         <label for="jumlahAkun">2. Jumlah Akun (Minimal 3, Kelipatan 3):</label>
-        <input type="number" id="jumlahAkun" placeholder="Contoh: 3, 6, atau 9">
+        <input type="number" id="jumlahAkun" placeholder="Contoh: 3, 6, atau 9" min="3" step="3">
         <div id="jumlahAkunError" class="error-message"></div>
 
         <label for="totalHargaDisplay">3. Total Harga:</label>
         <div id="totalHargaDisplay" class="harga-display">Rp 0</div>
 
-        <button id="tombolBayar" disabled>Bayar</button>
+        <button id="tombolProsesBayar" disabled>Lanjut ke Pembayaran</button>
     </div>
 
-    <hr>
-
-    <div class="container" id="statusCheckContainer">
-        <h2>🔍 Cek Status Pembayaran</h2>
-        <label for="transactionIdInput">Masukkan ID Transaksi Anda:</label>
-        <input type="text" id="transactionIdInput" placeholder="Contoh: 1321 atau TRXXYZ">
-        <button onclick="startListeningForStatus()">Cek Status</button>
-
-        <div id="paymentStatus" class="status-info">Masukkan ID dan klik "Cek Status"</div>
-        <p id="lastChecked"></p>
+    <div class="container" id="paymentSection">
+        <h2>💰 Pembayaran & Status</h2>
+        <p id="paymentInstructions">Silakan scan kode QRIS di bawah ini dan lakukan pembayaran sebesar <strong id="nominalPembayaran">Rp 0</strong>.</p>
+        <img id="qrisImage" src="https_placeholder_qris.png" alt="Scan QRIS untuk Pembayaran"> 
+        <div id="transactionInfo"></div>
+        <div id="paymentStatusDisplay" class="status-info">Menunggu Pembayaran...</div>
+        <p id="autoLastChecked" style="font-size: 0.8em; color: #777; margin-top: 15px;"></p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <script>
-        // Konfigurasi Firebase Anda (sudah diisi dengan data yang Anda berikan sebelumnya)
+        // Konfigurasi Firebase Anda
         const firebaseConfig = {
           apiKey: "AIzaSyDA_T-LRjANUHG1ZLqKG1vwD_Wu9hpzWz4",
           authDomain: "statuspembayaran-b7a1f.firebaseapp.com",
@@ -152,19 +137,37 @@
           measurementId: "G-28H2HJGVTC"
         };
 
-        // Inisialisasi Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // === LOGIKA UNTUK FORM PEMESANAN ===
+        // URL Google Apps Script Web App Anda (SUDAH DIUPDATE DENGAN URL ANDA)
+        const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxI2Ma8oK6s039PZyS0cIAY5T-70eo9Jp0PofnhBBCtN5SXrfjEeX9_chOeWx_feihmdw/exec';
+
         const kategoriAkunSelect = document.getElementById('kategoriAkun');
         const jumlahAkunInput = document.getElementById('jumlahAkun');
         const totalHargaDisplay = document.getElementById('totalHargaDisplay');
         const jumlahAkunError = document.getElementById('jumlahAkunError');
-        const tombolBayar = document.getElementById('tombolBayar');
+        const tombolProsesBayar = document.getElementById('tombolProsesBayar');
 
-        const hargaPerBlok = 100000; // Rp 100.000
-        const ukuranBlok = 3; // per 3 akun
+        const orderFormContainer = document.getElementById('orderFormContainer');
+        const paymentSection = document.getElementById('paymentSection');
+        const paymentInstructions = document.getElementById('paymentInstructions');
+        const nominalPembayaran = document.getElementById('nominalPembayaran');
+        const qrisImage = document.getElementById('qrisImage');
+        const transactionInfo = document.getElementById('transactionInfo');
+        const paymentStatusDisplay = document.getElementById('paymentStatusDisplay');
+        const autoLastChecked = document.getElementById('autoLastChecked');
+        
+        // PENTING: GANTI DENGAN URL GAMBAR QRIS STATIS ANDA YANG VALID
+        const STATIC_QRIS_IMAGE_URL = "https_placeholder_qris.png"; // Contoh: "https://via.placeholder.com/250x250.png?text=Scan+QRIS+Anda"
+        // Jika Anda punya URL gambar QRIS, ganti placeholder di atas.
+
+        const hargaPerBlok = 100000;
+        const ukuranBlok = 3;
+        const STATUS_BERHASIL_DARI_SHEET = "Lunas";
+
+        let currentActiveTransactionId = null;
+        let activePaymentStatusRef = null;
 
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
@@ -172,125 +175,178 @@
 
         function perbaruiTotalHarga() {
             const jumlah = parseInt(jumlahAkunInput.value);
-            jumlahAkunError.textContent = ''; // Bersihkan pesan error sebelumnya
-            tombolBayar.disabled = true; // Nonaktifkan tombol bayar secara default
+            jumlahAkunError.textContent = '';
+            tombolProsesBayar.disabled = true;
 
-            if (isNaN(jumlah)) {
+            if (isNaN(jumlah) && jumlahAkunInput.value !== "") { // Hanya error jika ada input tapi bukan angka
+                jumlahAkunError.textContent = 'Masukkan angka yang valid.';
                 totalHargaDisplay.textContent = formatRupiah(0);
-                // Tidak perlu pesan error jika kosong, hanya jika ada input tapi tidak valid
-                if (jumlahAkunInput.value !== "") {
-                     jumlahAkunError.textContent = 'Masukkan angka yang valid.';
-                }
                 return;
             }
-
+            if (jumlahAkunInput.value === "" || isNaN(jumlah)) { // Jika kosong atau belum valid, harga 0
+                totalHargaDisplay.textContent = formatRupiah(0);
+                return;
+            }
             if (jumlah < ukuranBlok) {
                 jumlahAkunError.textContent = `Jumlah minimal adalah ${ukuranBlok} akun.`;
                 totalHargaDisplay.textContent = formatRupiah(0);
                 return;
             }
-
             if (jumlah % ukuranBlok !== 0) {
-                jumlahAkunError.textContent = `Jumlah harus dalam kelipatan ${ukuranBlok} (misalnya: ${ukuranBlok}, ${ukuranBlok*2}, ${ukuranBlok*3}, dst.).`;
+                jumlahAkunError.textContent = `Jumlah harus dalam kelipatan ${ukuranBlok}.`;
                 totalHargaDisplay.textContent = formatRupiah(0);
                 return;
             }
-
-            // Jika semua validasi lolos
             const totalHarga = (jumlah / ukuranBlok) * hargaPerBlok;
             totalHargaDisplay.textContent = formatRupiah(totalHarga);
-            tombolBayar.disabled = false; // Aktifkan tombol bayar
+            tombolProsesBayar.disabled = false;
         }
 
-        jumlahAkunInput.addEventListener('input', perbaruiTotalHarga);
+        function generateTransactionId() {
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = ('0' + (d.getMonth() + 1)).slice(-2);
+            const day = ('0' + d.getDate()).slice(-2);
+            const hours = ('0' + d.getHours()).slice(-2);
+            const minutes = ('0' + d.getMinutes()).slice(-2);
+            const seconds = ('0' + d.getSeconds()).slice(-2);
+            const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+            return `TRX${year}${month}${day}-${hours}${minutes}${seconds}-${random}`; // Menambahkan prefix TRX
+        }
 
-        tombolBayar.addEventListener('click', function() {
-            const kategoriTerpilih = kategoriAkunSelect.options[kategoriAkunSelect.selectedIndex].text;
-            const jumlah = parseInt(jumlahAkunInput.value);
-            const totalHarga = (jumlah / ukuranBlok) * hargaPerBlok;
+        async function kirimPesananKeSheet(payload) {
+            tombolProsesBayar.disabled = true;
+            tombolProsesBayar.textContent = "Memproses...";
+            try {
+                // Untuk Apps Script Web App yang di-deploy sebagai "Anyone" dan mengembalikan JSON,
+                // kita tidak perlu 'mode: cors' atau 'redirect: follow' secara eksplisit jika tidak ada masalah.
+                // Header Content-Type harus 'text/plain' jika Apps Script membaca e.postData.contents sebagai string.
+                // Jika Apps Script `JSON.parse(e.postData.contents)`, maka 'application/json' di sini BUKAN cara yang tepat
+                // untuk mengirim via `fetch` ke Apps Script jika Apps Script mengharapkan `e.postData.contents` sebagai string JSON.
+                // Cara paling umum adalah mengirim sebagai `text/plain` dan Apps Script mem-parse-nya.
+                // Atau, jika mengirim sebagai `application/x-www-form-urlencoded`, Apps Script bisa membacanya dari `e.parameter`.
+                // Kita sudah set Apps Script `doPost` untuk `JSON.parse(e.postData.contents)`.
+                // `fetch` akan mengirim `Content-Type: text/plain;charset=UTF-8` secara default untuk string body.
 
-            if (tombolBayar.disabled) {
-                alert("Harap perbaiki input jumlah akun terlebih dahulu.");
-                return;
+                const response = await fetch(APPS_SCRIPT_WEB_APP_URL, {
+                    method: 'POST',
+                    cache: 'no-cache',
+                    headers: {
+                        // 'Content-Type': 'application/json' // Jika mengirim JSON dan Apps Script diatur untuk menerimanya langsung (lebih kompleks untuk doPost standar)
+                        // Untuk e.postData.contents, biarkan fetch mengirim content-type default (text/plain) atau set eksplisit
+                         'Content-Type': 'text/plain;charset=UTF-8', // Eksplisit lebih baik
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                tombolProsesBayar.disabled = false; // Aktifkan kembali tombol setelah selesai
+                tombolProsesBayar.textContent = "Lanjut ke Pembayaran";
+
+                if (!response.ok) {
+                    const errorText = await response.text(); // Coba dapatkan detail error dari Apps Script
+                    console.error('Network response was not ok.', response.status, errorText);
+                    throw new Error(`Gagal menghubungi server Apps Script: ${response.status} ${response.statusText}. Detail: ${errorText}`);
+                }
+                
+                const resultText = await response.text(); // Dapatkan respons sebagai teks dulu
+                console.log('Teks mentah dari Apps Script:', resultText);
+                const result = JSON.parse(resultText); // Kemudian parse sebagai JSON
+
+                console.log('Respon dari Apps Script:', result);
+                if (result.status === "success" && result.transactionId) {
+                    return result.transactionId;
+                } else {
+                    throw new Error(result.message || 'Gagal membuat transaksi di sheet.');
+                }
+            } catch (error) {
+                console.error('Error saat mengirim pesanan ke Sheet:', error);
+                alert(`Terjadi kesalahan saat mencatat pesanan: ${error.message}`);
+                tombolProsesBayar.disabled = false;
+                tombolProsesBayar.textContent = "Lanjut ke Pembayaran";
+                return null;
             }
-            
-            // Untuk sekarang, kita hanya tampilkan alert.
-            // Nantinya, di sini Anda bisa menambahkan logika untuk:
-            // 1. Generate ID Transaksi unik.
-            // 2. Menyimpan detail pesanan ini (kategori, jumlah, total harga, ID transaksi) ke Firebase atau Google Sheet dengan status awal "Menunggu Pembayaran".
-            // 3. Mengarahkan pengguna ke halaman pembayaran atau memberikan instruksi pembayaran.
-            alert(`Detail Pesanan:\nKategori: ${kategoriTerpilih}\nJumlah: ${jumlah} akun\nTotal Bayar: ${formatRupiah(totalHarga)}\n\nSilakan lanjutkan ke proses pembayaran (detail proses belum diimplementasikan).`);
-            
-            // Setelah ini, pengguna akan melakukan pembayaran, dan ID Transaksi dari proses tersebut
-            // akan digunakan di bagian "Cek Status Pembayaran" di bawah.
+        }
+
+        tombolProsesBayar.addEventListener('click', async function() {
+            if (tombolProsesBayar.disabled) return;
+
+            const kategoriValue = kategoriAkunSelect.value;
+            const kategoriText = kategoriAkunSelect.options[kategoriAkunSelect.selectedIndex].text;
+            const jumlah = parseInt(jumlahAkunInput.value);
+            const harga = (jumlah / ukuranBlok) * hargaPerBlok;
+            const generatedId = generateTransactionId();
+
+            const pesanan = {
+                transactionId: generatedId,
+                kategori: kategoriText, // Kirim teks kategori
+                jumlah: jumlah,
+                totalHarga: harga,
+                statusAwal: "Menunggu Pembayaran",
+                timestampPesan: new Date().toISOString()
+            };
+
+            const idTransaksiDariSheet = await kirimPesananKeSheet(pesanan);
+
+            if (idTransaksiDariSheet) {
+                currentActiveTransactionId = idTransaksiDariSheet;
+                
+                orderFormContainer.style.display = 'none';
+                paymentSection.style.display = 'block';
+
+                nominalPembayaran.textContent = formatRupiah(harga);
+                qrisImage.src = STATIC_QRIS_IMAGE_URL;
+                transactionInfo.innerHTML = `ID Transaksi Anda: <strong>${currentActiveTransactionId}</strong><br>Harap selesaikan pembayaran dan simpan ID ini. Status akan terupdate otomatis di bawah.`;
+                paymentStatusDisplay.textContent = 'Menunggu Pembayaran...';
+                paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
+                
+                mulaiMendengarkanStatusPembayaran(currentActiveTransactionId);
+            }
         });
 
-        // === LOGIKA UNTUK CEK STATUS PEMBAYARAN (SUDAH ADA SEBELUMNYA) ===
-        let currentTransactionId = null;
-        let paymentStatusRef = null;
-        const STATUS_BERHASIL_DARI_SHEET = "Lunas";
-
-        function startListeningForStatus() {
-            const transactionIdInput = document.getElementById('transactionIdInput');
-            const newTransactionId = transactionIdInput.value.trim();
-            const statusDiv = document.getElementById('paymentStatus');
-            const lastCheckedP = document.getElementById('lastChecked');
-
-            if (!newTransactionId) {
-                statusDiv.textContent = 'ID Transaksi tidak boleh kosong.';
-                statusDiv.className = 'paymentStatus status-error';
-                return;
+        function mulaiMendengarkanStatusPembayaran(transactionId) {
+            if (activePaymentStatusRef) {
+                activePaymentStatusRef.off();
             }
-
-            if (paymentStatusRef && (newTransactionId !== currentTransactionId || paymentStatusRef)) {
-                paymentStatusRef.off();
-                console.log(`Listener untuk ID ${currentTransactionId} dihentikan.`);
-                paymentStatusRef = null; 
-            }
+            console.log(`Memulai listener untuk status ID Transaksi: ${transactionId}`);
             
-            currentTransactionId = newTransactionId;
-            console.log(`Memulai listener untuk ID Transaksi: ${currentTransactionId}`);
+            const path = `pembayaran/${transactionId}`;
+            activePaymentStatusRef = database.ref(path);
 
-            statusDiv.textContent = `Mengecek status untuk ${currentTransactionId}...`;
-            statusDiv.className = 'paymentStatus status-info';
-            lastCheckedP.textContent = '';
-
-            const path = `pembayaran/${currentTransactionId}`;
-            paymentStatusRef = database.ref(path);
-
-            paymentStatusRef.on('value', (snapshot) => {
+            activePaymentStatusRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 const timestamp = new Date();
-                lastCheckedP.textContent = 'Data terakhir dicek: ' + timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                console.log("Data diterima dari Firebase:", data);
+                autoLastChecked.textContent = 'Status dicek: ' + timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                console.log("Data status diterima dari Firebase:", data);
 
-                if (data) {
-                    if (data.status && data.status.trim().toLowerCase() === STATUS_BERHASIL_DARI_SHEET.trim().toLowerCase()) {
-                        statusDiv.textContent = 'Pembayaran Berhasil!';
-                        statusDiv.className = 'paymentStatus status-success';
+                if (data && data.status) { // Pastikan data dan data.status ada
+                    if (data.status.trim().toLowerCase() === STATUS_BERHASIL_DARI_SHEET.trim().toLowerCase()) {
+                        paymentStatusDisplay.textContent = 'Pembayaran Berhasil!';
+                        paymentStatusDisplay.className = 'paymentStatusDisplay status-success';
+                        if(activePaymentStatusRef) activePaymentStatusRef.off(); 
+                        console.log(`Pembayaran ${transactionId} berhasil. Listener dihentikan.`);
                     } else {
-                        statusDiv.textContent = `Status: ${data.status || 'Menunggu Update'}`;
-                        statusDiv.className = 'paymentStatus status-pending';
+                        paymentStatusDisplay.textContent = `Status: ${data.status}`;
+                        paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
                     }
+                } else if (paymentStatusDisplay.textContent.includes("Menunggu Pembayaran")) {
+                    // Biarkan status "Menunggu Pembayaran" jika belum ada data di Firebase
+                    // atau data.status belum terdefinisi, karena data baru akan muncul 
+                    // setelah admin update sheet dan onEdit trigger.
                 } else {
-                    statusDiv.textContent = 'Data transaksi tidak ditemukan.';
-                    statusDiv.className = 'paymentStatus status-notfound';
+                    // Jika sebelumnya bukan "Menunggu Pembayaran" dan data jadi null/kosong
+                    paymentStatusDisplay.textContent = 'Data transaksi tidak ditemukan/belum update.';
+                    paymentStatusDisplay.className = 'paymentStatusDisplay status-notfound';
                 }
             }, (error) => {
-                console.error("Error membaca dari Firebase:", error);
-                statusDiv.textContent = 'Gagal mengambil data dari Firebase.';
-                statusDiv.className = 'paymentStatus status-error';
+                console.error("Error membaca status dari Firebase:", error);
+                paymentStatusDisplay.textContent = 'Gagal mengambil status dari Firebase.';
+                paymentStatusDisplay.className = 'paymentStatusDisplay status-error';
             });
         }
-
+        
+        jumlahAkunInput.addEventListener('input', perbaruiTotalHarga);
         window.onload = () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const trxIdFromUrl = urlParams.get('trx');
-            if (trxIdFromUrl) {
-                document.getElementById('transactionIdInput').value = trxIdFromUrl;
-                startListeningForStatus();
-            }
-            perbaruiTotalHarga(); // Panggil sekali saat load untuk inisialisasi status tombol bayar
+            perbaruiTotalHarga();
         };
     </script>
 </body>
