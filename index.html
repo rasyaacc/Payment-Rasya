@@ -1,47 +1,204 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <title>Status Pembayaran</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      margin-top: 100px;
-    }
-    #status {
-      font-size: 24px;
-      color: #333;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Pembayaran Real-time Anda</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f7f9;
+            color: #333;
+        }
+        #container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            text-align: left;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px); /* Mempertimbangkan padding dan border */
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #paymentStatus {
+            font-size: 1.5em; /* Lebih besar untuk status */
+            font-weight: bold;
+            padding: 20px;
+            margin-top: 25px;
+            border-radius: 8px;
+            min-height: 60px; /* Agar ukuran tidak berubah-ubah saat teks berganti */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            word-break: break-word; /* Agar teks panjang tidak meluber */
+        }
+        .status-pending {
+            background-color: #fef3cd;
+            color: #664d03;
+            border: 1px solid #ffeeba;
+        }
+        .status-success {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc;
+        }
+        .status-error, .status-notfound {
+            background-color: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+        }
+        .status-info {
+            background-color: #cff4fc;
+            color: #055160;
+            border: 1px solid #b6effb;
+        }
+        #lastChecked {
+            font-size: 0.8em;
+            color: #777;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-  <h2>Status Pembayaran</h2>
-  <div id="status">⏳ Menunggu Pembayaran...</div>
+    <div id="container">
+        <h1>Cek Status Pembayaran</h1>
+        <label for="transactionIdInput">Masukkan ID Transaksi Anda:</label>
+        <input type="text" id="transactionIdInput" placeholder="Contoh: 1321">
+        <button onclick="startListeningForStatus()">Cek Status</button>
 
-  <script>
-    async function fetchStatus() {
-      const apiURL = 'https://script.google.com/macros/s/AKfycbx9iG6aENVBZddl3XfjSaPV1hN894wXpON3f6Hcr6HqvPsiISkgHfn99QuPhEH9qld4/exec'; // Ganti dengan URL Web App kamu
-      const targetID = '123'; // Ganti sesuai ID pembeli
+        <div id="paymentStatus" class="status-info">Masukkan ID dan klik "Cek Status"</div>
+        <p id="lastChecked"></p>
+    </div>
 
-      try {
-        const response = await fetch(apiURL);
-        const data = await response.json();
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-        const match = data.find(row => row.id == targetID);
-        if (match && match.status.toLowerCase() === 'sukses') {
-          document.getElementById('status').innerText = '✅ Pembayaran Berhasil!';
-        } else {
-          document.getElementById('status').innerText = '⏳ Menunggu Pembayaran...';
+    <script>
+        // Konfigurasi Firebase Anda (sudah diisi dengan data yang Anda berikan)
+        const firebaseConfig = {
+          apiKey: "AIzaSyDA_T-LRjANUHG1ZLqKG1vwD_Wu9hpzWz4",
+          authDomain: "statuspembayaran-b7a1f.firebaseapp.com",
+          databaseURL: "https://statuspembayaran-b7a1f-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "statuspembayaran-b7a1f",
+          storageBucket: "statuspembayaran-b7a1f.firebasestorage.app",
+          messagingSenderId: "619692483603",
+          appId: "1:619692483603:web:b6c37409717b8ca89bcbe6",
+          measurementId: "G-28H2HJGVTC"
+        };
+
+        // Inisialisasi Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database(); // Menggunakan sintaks Realtime Database v8 (compat)
+
+        let currentTransactionId = null;
+        let paymentStatusRef = null; // Referensi ke listener Firebase
+
+        // Nilai status dari Google Sheet yang menandakan pembayaran berhasil
+        const STATUS_BERHASIL_DARI_SHEET = "Lunas";
+
+        function startListeningForStatus() {
+            const transactionIdInput = document.getElementById('transactionIdInput');
+            const newTransactionId = transactionIdInput.value.trim();
+            const statusDiv = document.getElementById('paymentStatus');
+            const lastCheckedP = document.getElementById('lastChecked');
+
+            if (!newTransactionId) {
+                statusDiv.textContent = 'ID Transaksi tidak boleh kosong.';
+                statusDiv.className = 'paymentStatus status-error';
+                return;
+            }
+
+            // Hentikan listener lama jika ID transaksi berubah atau jika listener sudah ada
+            if (paymentStatusRef && (newTransactionId !== currentTransactionId || paymentStatusRef)) {
+                paymentStatusRef.off(); // Hentikan listener sebelumnya
+                console.log(`Listener untuk ID ${currentTransactionId} dihentikan.`);
+                paymentStatusRef = null; // Reset referensi listener
+            }
+            
+            // Selalu set currentTransactionId ke nilai baru setelah listener lama (jika ada) dihentikan
+            currentTransactionId = newTransactionId;
+            console.log(`Memulai listener untuk ID Transaksi: ${currentTransactionId}`);
+
+            statusDiv.textContent = `Mengecek status untuk ${currentTransactionId}...`;
+            statusDiv.className = 'paymentStatus status-info';
+            lastCheckedP.textContent = '';
+
+            const path = `pembayaran/${currentTransactionId}`;
+            paymentStatusRef = database.ref(path);
+
+            paymentStatusRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                const timestamp = new Date();
+                lastCheckedP.textContent = 'Data terakhir dicek: ' + timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                console.log("Data diterima dari Firebase:", data);
+
+                if (data) {
+                    if (data.status && data.status.trim().toLowerCase() === STATUS_BERHASIL_DARI_SHEET.trim().toLowerCase()) {
+                        statusDiv.textContent = 'Pembayaran Berhasil!';
+                        statusDiv.className = 'paymentStatus status-success';
+                    } else {
+                        statusDiv.textContent = `Status: ${data.status || 'Menunggu Update'}`;
+                        statusDiv.className = 'paymentStatus status-pending';
+                    }
+                } else {
+                    // Jika data null, berarti ID transaksi tidak ditemukan di Firebase
+                    statusDiv.textContent = 'Data transaksi tidak ditemukan.';
+                    statusDiv.className = 'paymentStatus status-notfound';
+                }
+            }, (error) => {
+                console.error("Error membaca dari Firebase:", error);
+                statusDiv.textContent = 'Gagal mengambil data dari Firebase.';
+                statusDiv.className = 'paymentStatus status-error';
+            });
         }
-      } catch (e) {
-        document.getElementById('status').innerText = '⚠️ Gagal mengambil data';
-        console.error(e);
-      }
-    }
 
-    fetchStatus();
-    setInterval(fetchStatus, 5000); // refresh otomatis setiap 5 detik
-  </script>
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const trxIdFromUrl = urlParams.get('trx');
+            if (trxIdFromUrl) {
+                document.getElementById('transactionIdInput').value = trxIdFromUrl;
+                startListeningForStatus();
+            }
+        };
+    </script>
 </body>
 </html>
