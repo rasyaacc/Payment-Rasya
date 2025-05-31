@@ -1,3 +1,5 @@
+// FILE script.js LENGKAP DENGAN PERUBAHAN
+
 const firebaseConfig = {
   apiKey: "AIzaSyDA_T-LRjANUHG1ZLqKG1vwD_Wu9hpzWz4",
   authDomain: "statuspembayaran-b7a1f.firebaseapp.com",
@@ -29,11 +31,9 @@ const paymentStatusDisplay = document.getElementById('paymentStatusDisplay');
 const autoLastChecked = document.getElementById('autoLastChecked');
 const refreshWarning = document.getElementById('refreshWarning');
 
-// GANTI URL INI DENGAN URL GAMBAR QRIS BARU ANDA (RAW URL dari GitHub)
 const STATIC_QRIS_IMAGE_URL = "https://raw.githubusercontent.com/rasyaacc/Payment-Rasya/276cbd093d09cc76fcdc68b049de91b195a3953c/Qris-SP.jpeg";
 
-
-const hargaPerBlok = 100000;
+const hargaPerBlok = 100000; // Harga ini berlaku untuk kategori yang tersedia
 const ukuranBlok = 3;
 const STATUS_BERHASIL_DARI_SHEET = "Lunas";
 
@@ -66,29 +66,52 @@ function formatRupiah(angka) {
 }
 
 function perbaruiTotalHarga() {
+    const kategoriTerpilih = kategoriAkunSelect.value;
+    jumlahAkunError.textContent = ''; // Selalu bersihkan error di awal
+
+    // Reset tampilan total harga dari status "Stok Kosong" jika ada
+    totalHargaDisplay.classList.remove('stok-kosong');
+    // Kembalikan warna default (akan diambil dari CSS #totalHargaDisplay)
+    // Jika Anda mengatur warna default langsung di #totalHargaDisplay di CSS, baris di bawah ini mungkin tidak perlu
+    // totalHargaDisplay.style.color = ''; // Atau set ke warna default spesifik jika perlu
+
+    if (kategoriTerpilih === "1000_followers") {
+        totalHargaDisplay.textContent = "Stok Kosong";
+        totalHargaDisplay.classList.add('stok-kosong'); // Tambahkan kelas untuk styling khusus
+        tombolProsesBayar.disabled = true;
+        // jumlahAkunInput.value = ''; // Opsional: kosongkan jumlah akun jika stok kosong
+        return; // Keluar dari fungsi, tidak perlu kalkulasi harga
+    }
+
+    // Jika bukan "1000_followers", lanjutkan dengan validasi dan kalkulasi harga
     const jumlah = parseInt(jumlahAkunInput.value);
-    jumlahAkunError.textContent = '';
-    tombolProsesBayar.disabled = true;
 
     if (isNaN(jumlah) && jumlahAkunInput.value !== "") {
         jumlahAkunError.textContent = 'Masukkan angka yang valid.';
         totalHargaDisplay.textContent = formatRupiah(0);
+        tombolProsesBayar.disabled = true;
         return;
     }
     if (jumlahAkunInput.value === "" || isNaN(jumlah)) {
         totalHargaDisplay.textContent = formatRupiah(0);
+        tombolProsesBayar.disabled = true;
         return;
     }
     if (jumlah < ukuranBlok) {
         jumlahAkunError.textContent = `Jumlah minimal adalah ${ukuranBlok} akun.`;
         totalHargaDisplay.textContent = formatRupiah(0);
+        tombolProsesBayar.disabled = true;
         return;
     }
     if (jumlah % ukuranBlok !== 0) {
         jumlahAkunError.textContent = `Jumlah harus dalam kelipatan ${ukuranBlok}.`;
         totalHargaDisplay.textContent = formatRupiah(0);
+        tombolProsesBayar.disabled = true;
         return;
     }
+
+    // Kalkulasi harga hanya untuk kategori yang tersedia (misal "300_followers")
+    // Jika ada harga berbeda per kategori, logika bisa ditambahkan di sini
     const totalHarga = (jumlah / ukuranBlok) * hargaPerBlok;
     totalHargaDisplay.textContent = formatRupiah(totalHarga);
     tombolProsesBayar.disabled = false;
@@ -155,6 +178,11 @@ async function kirimPesananKeSheet(payload) {
 
 tombolProsesBayar.addEventListener('click', async function() {
     if (tombolProsesBayar.disabled) return;
+    // Tambahan: Cek lagi kategori sebelum proses, untuk jaga-jaga
+    if (kategoriAkunSelect.value === "1000_followers") {
+        alert("Kategori yang dipilih saat ini stoknya kosong.");
+        return;
+    }
 
     const kategoriText = kategoriAkunSelect.options[kategoriAkunSelect.selectedIndex].text;
     const jumlah = parseInt(jumlahAkunInput.value);
@@ -181,11 +209,9 @@ tombolProsesBayar.addEventListener('click', async function() {
         paymentNominalDisplay.textContent = formatRupiah(harga);
         qrisImage.src = STATIC_QRIS_IMAGE_URL;
         
-        // --- PERUBAHAN DI SINI ---
         transactionInfo.innerHTML = `ID Transaksi Anda:<br>
                                      <strong>${currentActiveTransactionId}</strong>
                                      <div class="transaction-description">Harap selesaikan pembayaran dan simpan ID ini. Status akan terupdate otomatis di bawah.</div>`;
-        // --- AKHIR PERUBAHAN ---
         
         paymentStatusDisplay.textContent = 'Menunggu Pembayaran...';
         paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
@@ -217,19 +243,22 @@ function mulaiMendengarkanStatusPembayaran(transactionId) {
             } else {
                 paymentStatusDisplay.textContent = `Status: ${data.status}`;
                 paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
-                refreshWarning.style.display = 'block';
+                refreshWarning.style.display = 'block'; // Pastikan warning tetap ada jika status belum berhasil
                 addBeforeUnloadListener();
             }
         } else if (paymentStatusDisplay.textContent.includes("Menunggu Pembayaran")) {
+             // Kondisi awal, warning sudah seharusnya tampil
             refreshWarning.style.display = 'block';
             addBeforeUnloadListener();
         } else {
+            // Jika tidak ada data status sama sekali setelah proses pembayaran dimulai
             paymentStatusDisplay.textContent = 'Data transaksi tidak ditemukan/belum update.';
             paymentStatusDisplay.className = 'paymentStatusDisplay status-notfound';
             refreshWarning.style.display = 'block';
             addBeforeUnloadListener();
         }
     }, (error) => {
+        console.error("Firebase read error:", error);
         paymentStatusDisplay.textContent = 'Gagal mengambil status dari Firebase.';
         paymentStatusDisplay.className = 'paymentStatusDisplay status-error';
         refreshWarning.style.display = 'block';
@@ -237,10 +266,14 @@ function mulaiMendengarkanStatusPembayaran(transactionId) {
     });
 }
 
+// --- TAMBAHKAN EVENT LISTENER UNTUK SELECT KATEGORI ---
+kategoriAkunSelect.addEventListener('change', perbaruiTotalHarga);
+// --- AKHIR PENAMBAHAN EVENT LISTENER ---
+
 jumlahAkunInput.addEventListener('input', perbaruiTotalHarga);
 window.onload = () => {
-    perbaruiTotalHarga();
-    if (paymentSection.style.display === 'block') {
+    perbaruiTotalHarga(); // Panggil saat halaman dimuat pertama kali
+    if (paymentSection.style.display === 'block' && !paymentStatusDisplay.textContent.includes('Pembayaran Berhasil!')) {
          refreshWarning.style.display = 'block';
          addBeforeUnloadListener();
     } else {
