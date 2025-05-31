@@ -184,7 +184,7 @@ tombolProsesBayar.addEventListener('click', async function() {
         // --- PERUBAHAN DI SINI ---
         transactionInfo.innerHTML = `ID Transaksi Anda:<br>
                                      <strong>${currentActiveTransactionId}</strong>
-                                     <div class="transaction-description">Harap selesaikan pembayaran dan simpan ID ini.<br>Status akan terupdate otomatis di bawah.</div>`;
+                                     <div class="transaction-description">Harap selesaikan pembayaran dan simpan ID ini. Status akan terupdate otomatis di bawah.</div>`;
         // --- AKHIR PERUBAHAN ---
         
         paymentStatusDisplay.textContent = 'Menunggu Pembayaran...';
