@@ -156,7 +156,6 @@ button:disabled {
     line-height: 1.7;
     margin-top: 0;
     margin-bottom: 5px; /* Mengurangi margin bawah karena nominal akan di bawahnya */
-     /* text-align: center; sudah di-handle oleh .container */
 }
 #paymentNominalDisplay { /* Untuk nominal pembayaran */
     font-size: 1.4em; /* Lebih besar untuk nominal */
@@ -171,7 +170,7 @@ button:disabled {
     max-width: 260px;
     width: 65%;
     height: auto;
-    margin-top: 0; /* Margin atas diatur oleh #paymentNominalDisplay */
+    margin-top: 0; 
     margin-bottom: 30px;
     border: none;
     padding: 0;
@@ -183,6 +182,7 @@ button:disabled {
 #qrisImage:hover {
     transform: scale(1.03);
 }
+
 #transactionInfo {
     font-size: 0.95em;
     color: #4a5568;
@@ -193,17 +193,23 @@ button:disabled {
     padding: 15px 20px;
     border-radius: 10px;
     border: 1px solid #e2e8f0;
-    text-align: center; /* Ditambahkan untuk rata tengah */
+    text-align: center; /* Ini membuat "ID Transaksi Anda:" dan ID nya sendiri tetap tengah */
 }
 #transactionInfo strong { /* Untuk ID transaksi */
     color: #ea580c;
     font-weight: 600;
-    display: block; /* Agar ID transaksi di baris baru */
-    margin-top: 4px; /* Sedikit jarak atas */
-    margin-bottom: 8px; /* Jarak bawah sebelum teks berikutnya */
-    font-size: 1.1em; /* Sedikit lebih besar */
-    word-break: break-all; /* Agar ID panjang tidak merusak layout */
+    display: block; /* Membuat ID mengambil baris sendiri */
+    margin-top: 4px; /* Jarak atas dari "ID Transaksi Anda:" */
+    margin-bottom: 8px; /* Jarak bawah sebelum deskripsi */
+    font-size: 1.1em; 
+    word-break: break-all; 
 }
+
+/* --- KELAS BARU UNTUK DESKRIPSI DI BAWAH ID TRANSAKSI --- */
+.transaction-description {
+    text-align: left; /* Membuat teks deskripsi rata kiri */
+}
+/* --- AKHIR KELAS BARU --- */
 
 #refreshWarning {
     background-color: #fef3c7;
@@ -225,7 +231,6 @@ button:disabled {
     font-size: 1.1em;
 }
 
-/* !!! STYLING UNTUK #paymentStatusDisplay DAN KELAS STATUSNYA DIAMBIL DARI KODE ASLI ANDA !!! */
 #paymentStatusDisplay {
     font-size: 1.4em;
     font-weight: bold;
@@ -243,7 +248,6 @@ button:disabled {
 .status-pending { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
 .status-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
 .status-error, .status-notfound { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-/* !!! AKHIR STYLING ASLI UNTUK STATUS PEMBAYARAN !!! */
 
 #paymentSection { display: none; animation: fadeIn 0.5s ease-out forwards; }
 #autoLastChecked { font-size: 0.85em; color: #718096; margin-top: 25px; opacity: 0.8;}
