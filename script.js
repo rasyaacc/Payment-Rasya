@@ -29,7 +29,7 @@ const paymentStatusDisplay = document.getElementById('paymentStatusDisplay');
 const autoLastChecked = document.getElementById('autoLastChecked');
 const refreshWarning = document.getElementById('refreshWarning');
 
-const STATIC_QRIS_IMAGE_URL = "https://raw.githubusercontent.com/rasyaacc/Payment-Rasya/2cfca336c23a0350065fbdd9e69ad0eceacf6528/Qris-SP.jpeg";
+const STATIC_QRIS_IMAGE_URL = "https://raw.githubusercontent.com/rasyaacc/Payment-Rasya/276cbd093d09cc76fcdc68b049de91b195a3953c/Qris-SP.jpeg";
 
 const hargaPerBlok = 100000;
 const ukuranBlok = 3;
