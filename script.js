@@ -29,7 +29,9 @@ const paymentStatusDisplay = document.getElementById('paymentStatusDisplay');
 const autoLastChecked = document.getElementById('autoLastChecked');
 const refreshWarning = document.getElementById('refreshWarning');
 
+// GANTI URL INI DENGAN URL GAMBAR QRIS BARU ANDA (RAW URL dari GitHub)
 const STATIC_QRIS_IMAGE_URL = "https://raw.githubusercontent.com/rasyaacc/Payment-Rasya/276cbd093d09cc76fcdc68b049de91b195a3953c/Qris-SP.jpeg";
+
 
 const hargaPerBlok = 100000;
 const ukuranBlok = 3;
@@ -178,7 +180,13 @@ tombolProsesBayar.addEventListener('click', async function() {
 
         paymentNominalDisplay.textContent = formatRupiah(harga);
         qrisImage.src = STATIC_QRIS_IMAGE_URL;
-        transactionInfo.innerHTML = `ID Transaksi Anda:<br><strong>${currentActiveTransactionId}</strong>Harap selesaikan pembayaran dan simpan ID ini.<br>Status akan terupdate otomatis di bawah.`;
+        
+        // --- PERUBAHAN DI SINI ---
+        transactionInfo.innerHTML = `ID Transaksi Anda:<br>
+                                     <strong>${currentActiveTransactionId}</strong>
+                                     <div class="transaction-description">Harap selesaikan pembayaran dan simpan ID ini.<br>Status akan terupdate otomatis di bawah.</div>`;
+        // --- AKHIR PERUBAHAN ---
+        
         paymentStatusDisplay.textContent = 'Menunggu Pembayaran...';
         paymentStatusDisplay.className = 'paymentStatusDisplay status-pending';
         refreshWarning.style.display = 'block';
