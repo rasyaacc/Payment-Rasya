@@ -119,10 +119,20 @@ button:disabled {
     align-items: center;
     word-break: break-word;
     background-color: #eef2f5;
-    color: #2563eb;
+    color: #2563eb; /* Warna default untuk harga */
     border: 1px solid #d1d9e0;
     transition: all 0.3s ease;
 }
+
+/* --- PENAMBAHAN KELAS UNTUK STOK KOSONG --- */
+#totalHargaDisplay.stok-kosong {
+    color: #ef4444; /* Warna merah untuk menandakan stok kosong */
+    /* Anda bisa menambahkan gaya lain jika perlu, misalnya: */
+    /* font-weight: bold; */
+    /* background-color: #ffebee; */ /* Contoh warna latar belakang muda */
+}
+/* --- AKHIR PENAMBAHAN KELAS --- */
+
 .error-message {
     color: #ef4444;
     font-size: 0.875em;
@@ -149,21 +159,20 @@ button:disabled {
     color: #2563eb;
 }
 
-/* Styling untuk instruksi pembayaran yang diubah */
-#paymentInstructionsText { /* Teks instruksi asli */
+#paymentInstructionsText {
     font-size: 1.05em;
-    color: #4a5568; /* Warna teks lebih lembut */
+    color: #4a5568; 
     line-height: 1.7;
     margin-top: 0;
-    margin-bottom: 5px; /* Mengurangi margin bawah karena nominal akan di bawahnya */
+    margin-bottom: 5px; 
 }
-#paymentNominalDisplay { /* Untuk nominal pembayaran */
-    font-size: 1.4em; /* Lebih besar untuk nominal */
+#paymentNominalDisplay { 
+    font-size: 1.4em; 
     font-weight: 700;
-    color: #10b981; /* Hijau modern */
+    color: #10b981; 
     margin-top: 5px;
-    margin-bottom: 25px; /* Jarak sebelum QRIS */
-    text-align: center; /* Pastikan rata tengah */
+    margin-bottom: 25px; 
+    text-align: center; 
 }
 
 #qrisImage {
@@ -193,23 +202,21 @@ button:disabled {
     padding: 15px 20px;
     border-radius: 10px;
     border: 1px solid #e2e8f0;
-    text-align: center; /* Ini membuat "ID Transaksi Anda:" dan ID nya sendiri tetap tengah */
+    text-align: center; 
 }
-#transactionInfo strong { /* Untuk ID transaksi */
+#transactionInfo strong { 
     color: #ea580c;
     font-weight: 600;
-    display: block; /* Membuat ID mengambil baris sendiri */
-    margin-top: 4px; /* Jarak atas dari "ID Transaksi Anda:" */
-    margin-bottom: 8px; /* Jarak bawah sebelum deskripsi */
+    display: block; 
+    margin-top: 4px; 
+    margin-bottom: 8px; 
     font-size: 1.1em; 
     word-break: break-all; 
 }
 
-/* --- KELAS BARU UNTUK DESKRIPSI DI BAWAH ID TRANSAKSI --- */
 .transaction-description {
-    text-align: left; /* Membuat teks deskripsi rata kiri */
+    text-align: left; 
 }
-/* --- AKHIR KELAS BARU --- */
 
 #refreshWarning {
     background-color: #fef3c7;
